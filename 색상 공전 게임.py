@@ -50,3 +50,4 @@ class Star:
 
     def draw(self):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
+
