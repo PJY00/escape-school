@@ -36,3 +36,18 @@ class Orb:
     def draw(self):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
+# 플레이어 별 클래스
+class Star:
+    def __init__(self):
+        self.color = COLORS[star_color_index]  
+        self.radius = 10  
+        self.angle = 0  
+
+    def update_position(self):
+        x = PLANET_CENTER[0] + ORBIT_RADIUS * math.cos(math.radians(self.angle))
+        y = PLANET_CENTER[1] + ORBIT_RADIUS * math.sin(math.radians(self.angle))
+        self.position = (int(x), int(y))
+
+    def draw(self):
+        pygame.draw.circle(screen, self.color, self.position, self.radius)
+
