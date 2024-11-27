@@ -1,6 +1,7 @@
 import pygame
 import random
 from pygame.locals import *
+import os
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
 DICE_SIZE = (100, 100)
@@ -18,9 +19,14 @@ def init_game():
 def load_resources():
     """리소스 로드 함수"""
     try:
-        dice_images = [pygame.image.load(f"dice_{i}.png") for i in range(1, 7)]
+        dice_images = [pygame.image.load(f"diceImage/dice_{i}.png") for i in range(1, 7)]
         dice_images = [pygame.transform.scale(img, DICE_SIZE) for img in dice_images]
-        bg = pygame.image.load('bg.png')
+        bg = pygame.image.load("diceImage/bg.png")
+        
+        print()
+        print(len(dice_images))
+        print()
+
         bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
     except FileNotFoundError:
         print("리소스 파일이 누락되었습니다. 주사위와 배경 이미지를 확인하세요.")
