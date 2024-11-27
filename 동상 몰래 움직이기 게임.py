@@ -54,59 +54,73 @@ class Player:
         pygame.draw.rect(screen, BLACK, self.rect)
 
 # 게임 초기화
-statue = Statue((50, HEIGHT // 2 - 50))
-player = Player((WIDTH - 100, HEIGHT // 2 - 25))
-clock = pygame.time.Clock()
-running = True
-game_over = False
-success = False
+def init_game():
+    statue = Statue((50, HEIGHT // 2 - 50))
+    player = Player((WIDTH - 100, HEIGHT // 2 - 25))
+    clock = pygame.time.Clock()
+    game_over = False
+    success = False
 
-# 메인 루프
-while running:
-    screen.fill(WHITE)
+# 게임 로직
+def main():
+    
+    
+    running = True
+    statue = Statue((50, HEIGHT // 2 - 50))
+    player = Player((WIDTH - 100, HEIGHT // 2 - 25))
+    clock = pygame.time.Clock()
+    game_over = False
+    success = False
+    
+    while running:
+        screen.fill(WHITE)
 
-    # 이벤트 처리
-    keys = pygame.key.get_pressed()
-    for event in pygame.event.get():
-        if event.type == QUIT:
+        # 이벤트 처리
+        keys = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                running = False
+
+        # 동상 상태 업데이트
+        statue.update()
+
+        # 플레이어 업데이트
+        player.update(keys)
+
+        # 충돌 감지
+        if statue.state == "open" and player.is_moving:
+            game_over = True
             running = False
 
-    # 동상 상태 업데이트
-    statue.update()
+        if player.rect.colliderect(statue.rect):
+            success = True
+            running = False
 
-    # 플레이어 업데이트
-    player.update(keys)
+        # 그리기
+        statue.draw(screen)
+        player.draw(screen)
 
-    # 충돌 감지
-    if statue.state == "open" and player.is_moving:
-        game_over = True
-        running = False
+        # 동상 상태 텍스트
+        state_text = FONT.render(
+            "눈 뜸!" if statue.state == "open" else "눈 감음!", True, RED if statue.state == "open" else GREEN
+        )
+        screen.blit(state_text, (WIDTH // 2 - 100, 50))
 
-    if player.rect.colliderect(statue.rect):
-        success = True
-        running = False
+        pygame.display.flip()
+        clock.tick(30)
 
-    # 그리기
-    statue.draw(screen)
-    player.draw(screen)
-
-    # 동상 상태 텍스트
-    state_text = FONT.render(
-        "눈 뜸!" if statue.state == "open" else "눈 감음!", True, RED if statue.state == "open" else GREEN
-    )
-    screen.blit(state_text, (WIDTH // 2 - 100, 50))
-
+    # 결과 화면
+    screen.fill(WHITE)
+    if game_over:
+        result_text = FONT.render("GAME OVER!", True, RED)
+    elif success:
+        result_text = FONT.render("SUCCESS!", True, GREEN)
+    screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
     pygame.display.flip()
-    clock.tick(30)
+    pygame.time.delay(3000)
 
-# 결과 화면
-screen.fill(WHITE)
-if game_over:
-    result_text = FONT.render("GAME OVER!", True, RED)
-elif success:
-    result_text = FONT.render("SUCCESS!", True, GREEN)
-screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
-pygame.display.flip()
-pygame.time.delay(3000)
+    pygame.quit()
+    
 
-pygame.quit()
+if __name__ == "__main__":
+    main()
