@@ -20,3 +20,19 @@ star_speed = 2  # 별이 회전하는 속도
 star_color_index = 0  # 별의 색상 인덱스
 passed_orbs = 0  # 통과한 원의 개수
 
+# 원 클래스 (공전 궤도 상의 장애물)
+class Orb:
+    def __init__(self):
+        self.angle = random.uniform(0, 360) 
+        self.color = random.choice(COLORS)  
+        self.radius = 20  
+        self.position = self.calculate_position()  
+
+    def calculate_position(self):
+        x = PLANET_CENTER[0] + ORBIT_RADIUS * math.cos(math.radians(self.angle))
+        y = PLANET_CENTER[1] + ORBIT_RADIUS * math.sin(math.radians(self.angle))
+        return (int(x), int(y))
+
+    def draw(self):
+        pygame.draw.circle(screen, self.color, self.position, self.radius)
+
