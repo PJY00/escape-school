@@ -51,3 +51,8 @@ class Star:
     def draw(self):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
+# 초기화
+star = Star() 
+orbs = [Orb() for _ in range(3)]  
+clock = pygame.time.Clock()  
+score = 0  
