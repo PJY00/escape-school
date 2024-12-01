@@ -56,3 +56,14 @@ star = Star()
 orbs = [Orb() for _ in range(3)]  
 clock = pygame.time.Clock()  
 score = 0  
+
+# 게임 종료 함수
+def game_over():
+    font = pygame.font.Font(None, 72)
+    text = font.render("Game Over", True, WHITE)
+    screen.blit(text, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 50))
+    pygame.display.flip()
+    pygame.time.delay(2000)  
+    pygame.quit()  
+    sys.exit()
+
