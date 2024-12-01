@@ -16,8 +16,11 @@ pygame.display.set_caption("Escape School")
 
 WHITE = (255, 255, 255)
 
-# 폰트 설정
-font = pygame.font.SysFont('Arial', 48)
+font_path = 'neodgm_code.ttf'  # 폰트 파일 경로
+font = pygame.font.Font(font_path, 48)  # 폰트 크기 48로 설정
+
+# 텍스트 렌더링
+text = font.render('Hello, Pygame with custom font!', True, (255, 0, 0))  # 빨간색 텍스트
 
 # 화면 업데이트 루프
 running = True
