@@ -89,4 +89,11 @@ while True:
                 star_color_index = (star_color_index + 1) % len(COLORS)
                 star.color = COLORS[star_color_index]
 
-    
+    # 별의 위치 업데이트
+    star.angle = (star.angle + star_speed) % 360
+    star.update_position()
+
+    # 행성(중심 원) 그리기
+    pygame.draw.circle(screen, WHITE, PLANET_CENTER, 30)
+    pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
+
