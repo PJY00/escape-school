@@ -97,3 +97,16 @@ while True:
     pygame.draw.circle(screen, WHITE, PLANET_CENTER, 30)
     pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
 
+    # 장애물(원) 처리
+    for orb in orbs[:]:
+        orb.draw()
+        distance = math.hypot(orb.position[0] - star.position[0], orb.position[1] - star.position[1])
+        if distance < orb.radius + star.radius:
+            if orb.color == star.color:
+                score += 1
+                passed_orbs += 1
+                orbs.remove(orb)
+                existing_angles.remove(orb.angle)
+            else:
+                game_over()
+
