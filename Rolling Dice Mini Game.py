@@ -2,6 +2,9 @@ import pygame
 import random
 from pygame.locals import *
 import os
+import matplotlib.pyplot as plt
+plt.rcParams['font.family']='Neo 둥근모'
+plt.rcParams['axes.unicode_minus']=False
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
 DICE_SIZE = (100, 100)
