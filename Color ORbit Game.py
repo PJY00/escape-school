@@ -117,3 +117,14 @@ while True:
         for orb in orbs:
             existing_angles.append(orb.angle)
 
+    # 별 그리기
+    star.draw()
+
+    # 점수 표시
+    font = pygame.font.Font(None, 36)
+    score_text = font.render(f"Score: {score}", True, WHITE)
+    screen.blit(score_text, (10, 10))
+
+    # 화면 업데이트
+    pygame.display.flip()
+    clock.tick(30)
