@@ -110,3 +110,10 @@ while True:
             else:
                 game_over()
 
+    # 3개의 원을 모두 통과하면 새 원 생성
+    if passed_orbs == 3:
+        passed_orbs = 0
+        orbs = [Orb(existing_angles) for _ in range(3)]
+        for orb in orbs:
+            existing_angles.append(orb.angle)
+
