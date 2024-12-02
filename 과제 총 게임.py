@@ -18,8 +18,14 @@ YELLOW = (255, 255, 0)
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))  # 게임 화면 크기 설정
-pygame.display.set_caption("Shmup!")  # 창 제목 설정
+pygame.display.set_caption("Shooter!")  # 창 제목 설정
 clock = pygame.time.Clock()  # 게임 루프 속도를 설정
+
+font_path = 'NEODGM_CODE.TTF'  # 폰트 파일 경로
+
+# 점수 변수 
+score = 0
+font = pygame.font.Font(font_path, 36)  # 점수 표시 폰트 설정
 
 # 플레이어 클래스
 class Player(pygame.sprite.Sprite):
@@ -49,6 +55,23 @@ class Player(pygame.sprite.Sprite):
         bullet = Bullet(self.rect.centerx, self.rect.top)  # 플레이어의 위치에서 총알 생성
         all_sprites.add(bullet)  # 총알을 모든 스프라이트 그룹에 추가
         bullets.add(bullet)  # 총알을 총알 그룹에 추가
+        
+# 적 총알 클래스
+class EnemyBullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((10, 10))  # 총알 크기 설정
+        self.image.fill(RED)  # 총알 색상 설정
+        self.rect = self.image.get_rect()  # 총알의 위치와 크기 설정
+        self.rect.centerx = x  # 총알의 X 위치 설정
+        self.rect.top = y  # 총알의 Y 위치 설정
+        self.speedy = 8  # 총알의 Y 속도 (아래로 발사)
+
+    def update(self):
+        self.rect.y += self.speedy  # Y 위치 갱신 (아래로 이동)
+        if self.rect.top > HEIGHT:  # 화면 밖으로 나가면
+            self.kill()  # 총알 삭제
+
 
 # 적 클래스
 class Mob(pygame.sprite.Sprite):
@@ -59,8 +82,9 @@ class Mob(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()  # 적의 위치와 크기 설정
         self.rect.x = random.randrange(WIDTH - self.rect.width)  # 적의 X 위치 랜덤 설정
         self.rect.y = random.randrange(-100, -40)  # 적의 Y 위치 랜덤 설정 (화면 위에서 출발)
-        self.speedy = random.randrange(1, 8)  # Y 속도 랜덤 설정 (속도는 1부터 8 사이)
+        self.speedy = random.randrange(1, 4)  # Y 속도 랜덤 설정 (속도는 1부터 4 사이)
         self.speedx = random.randrange(-3, 3)  # X 속도 랜덤 설정 (좌우로 이동)
+        self.last_shot_time = pygame.time.get_ticks()  # 마지막 총알 발사 시간
 
     def update(self):
         self.rect.x += self.speedx  # X 위치 갱신
@@ -68,13 +92,22 @@ class Mob(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:  # 화면 밖으로 나가면
             self.rect.x = random.randrange(WIDTH - self.rect.width)  # 새로운 위치로 재설정
             self.rect.y = random.randrange(-100, -40)  # 화면 위쪽에서 다시 생성
-            self.speedy = random.randrange(1, 8)  # 새로운 속도 설정
+            self.speedy = random.randrange(1, 4)  # 새로운 속도 설정
+             # 일정 시간마다 총알 발사
+        if pygame.time.get_ticks() - self.last_shot_time > 1000:  # 1초마다 발사
+            self.shoot()
+            self.last_shot_time = pygame.time.get_ticks()  # 마지막 발사 시간 갱신
+
+    def shoot(self):
+        bullet = EnemyBullet(self.rect.centerx, self.rect.bottom)  # 적의 위치에서 총알 생성
+        all_sprites.add(bullet)  # 총알을 모든 스프라이트 그룹에 추가
+        enemy_bullets.add(bullet)  # 적 총알을 적 총알 그룹에 추가
 
 # 총알 클래스
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((10, 20))  # 총알 크기 설정
+        self.image = pygame.Surface((10, 10))  # 총알 크기 설정
         self.image.fill(YELLOW)  # 총알 색상 설정
         self.rect = self.image.get_rect()  # 총알의 위치와 크기 설정
         self.rect.bottom = y  # 총알의 Y 위치 설정
@@ -90,11 +123,12 @@ class Bullet(pygame.sprite.Sprite):
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
 bullets = pygame.sprite.Group() 
+enemy_bullets = pygame.sprite.Group()  # 적 총알 그룹 추가
 player = Player()  # 플레이어 객체 생성
 all_sprites.add(player)  # 모든 스프라이트 그룹에 플레이어 추가
 
 # 적 생성
-for i in range(8):
+for i in range(5):
     m = Mob()
     all_sprites.add(m)
     mobs.add(m)
@@ -118,6 +152,15 @@ while running:
         m = Mob()  # 새로운 적 생성
         all_sprites.add(m)  # 모든 스프라이트 그룹에 추가
         mobs.add(m)  # 적 그룹에 추가
+        score += 10  # 점수 10점 추가
+        
+        # 플레이어와 적의 총알 간 충돌 처리
+    if pygame.sprite.spritecollide(player, enemy_bullets, False):  # 충돌 발생 시
+        running = False  # 게임 종료
+        
+    # 점수가 500점에 도달하면 게임 종료
+    if score >= 300:
+        running = False
 
     # 플레이어와 적의 충돌 처리
     hits = pygame.sprite.spritecollide(player, mobs, False)
@@ -126,6 +169,11 @@ while running:
 
     screen.fill(BLACK)  # 화면을 검정색으로 채움
     all_sprites.draw(screen)  # 모든 스프라이트를 화면에 그리기
+    
+    # 점수 표시
+    score_text = font.render(f"Score: {score}", True, WHITE)
+    screen.blit(score_text, (10, 10))
+    
     pygame.display.flip()  # 화면 업데이트
 
 # 게임 종료
