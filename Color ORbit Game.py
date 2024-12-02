@@ -24,8 +24,8 @@ star_color_index = 0  # 별의 색상 인덱스
 passed_orbs = 0  # 통과한 원의 개수
 
 # 최소 반응 거리 및 장애물 간 간격
-MIN_REACTION_ANGLE = 90  # 별과 장애물 사이 최소 각도 차이
-MIN_ORB_SPACING = 90  # 장애물 간 최소 각도 차이
+MIN_ORB_SPACING = 60  # 장애물 간 최소 각도 차이
+MIN_STAR_DISTANCE = 120  # 별과 장애물 간 최소 각도 차이
 
 # 원 클래스 (공전 궤도 상의 장애물)
 class Orb:
@@ -33,12 +33,13 @@ class Orb:
         self.radius = 20
         self.color = random.choice(COLORS)
         while True:
-            # 장애물이 별과 기존 장애물에서 일정 각도 이상 떨어진 위치에 생성되도록 설정
+            # 새로운 각도를 생성
             self.angle = random.uniform(0, 360)
-            angle_diff = abs((self.angle - star_angle + 360) % 360)  # 별과의 각도 차이
+            # 별과의 거리 및 기존 각도와의 최소 간격 확인
+            star_diff = abs((self.angle - star_angle + 360) % 360)
             if (
-                MIN_REACTION_ANGLE <= angle_diff <= 180  # 별과 최소 거리
-                and all(abs((self.angle - existing_angle + 360) % 360) > MIN_ORB_SPACING for existing_angle in existing_angles)  # 다른 장애물들과 최소 거리 유지
+                star_diff >= MIN_STAR_DISTANCE  # 별과 최소 거리 유지
+                and all(abs((self.angle - angle + 360) % 360) >= MIN_ORB_SPACING for angle in existing_angles)  # 다른 장애물들과 최소 거리 유지
             ):
                 break
         self.position = self.calculate_position()
@@ -76,6 +77,17 @@ def create_orbs(num_orbs, star_angle):
         orbs.append(orb)
         existing_angles.append(orb.angle)
     return orbs
+
+# 성공 함수
+def success():
+    font = pygame.font.Font(None, 72)
+    text = font.render("Success!", True, WHITE)
+    screen.fill(BLACK)
+    screen.blit(text, (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 50))
+    pygame.display.flip()
+    pygame.time.delay(2000)
+    pygame.quit()
+    sys.exit()
 
 # 초기화
 star = Star()
@@ -124,6 +136,10 @@ while True:
                 orbs.remove(orb)
             else:
                 game_over()
+
+    # 점수 조건 체크
+    if score >= 25:
+        success()
 
     # 새로운 장애물 생성 (2~3개의 장애물 생성)
     if len(orbs) == 0:
