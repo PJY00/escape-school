@@ -127,7 +127,7 @@ while True:
     star.update_position()
 
     # 행성(중심 원) 그리기
-    pygame.draw.circle(screen, WHITE, PLANET_CENTER, 30)
+    pygame.draw.circle(screen, WHITE, PLANET_CENTER, 90)  # 중심 원 반지름을 90으로 늘림
     pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
 
     # 장애물(원) 처리
