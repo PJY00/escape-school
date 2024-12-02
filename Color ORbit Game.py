@@ -149,6 +149,9 @@ while True:
                 game_over()
 
     # 점수 조건 체크
+    if score == 10:
+        star_speed = -star_speed  # 회전 방향 반대로 변경
+
     if score >= 25:
         success()
 
