@@ -37,7 +37,7 @@ def handle_click(pos):
     if start_text_rect.collidepoint(pos):
         print("Start button clicked!")  # 원하는 작업 실행
     elif load_text_rect.collidepoint(pos):
-        print("Save button clicked!")  # 원하는 작업 실행
+        print("load button clicked!")  # 원하는 작업 실행
     elif quit_text_rect.collidepoint(pos):
         print("Quit button clicked!")  # 프로그램 종료
         pygame.quit()  # pygame 리소스 해제
