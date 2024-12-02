@@ -23,14 +23,23 @@ star_speed = 2  # 별이 회전하는 속도
 star_color_index = 0  # 별의 색상 인덱스
 passed_orbs = 0  # 통과한 원의 개수
 
+# 최소 반응 거리 및 장애물 간 간격
+MIN_REACTION_ANGLE = 90  # 별과 장애물 사이 최소 각도 차이
+MIN_ORB_SPACING = 90  # 장애물 간 최소 각도 차이
+
 # 원 클래스 (공전 궤도 상의 장애물)
 class Orb:
-    def __init__(self, existing_angles):
+    def __init__(self, star_angle, existing_angles):
         self.radius = 20
         self.color = random.choice(COLORS)
         while True:
+            # 장애물이 별과 기존 장애물에서 일정 각도 이상 떨어진 위치에 생성되도록 설정
             self.angle = random.uniform(0, 360)
-            if all(abs(self.angle - angle) > 40 for angle in existing_angles):  # 최소 40도 간격
+            angle_diff = abs((self.angle - star_angle + 360) % 360)  # 별과의 각도 차이
+            if (
+                MIN_REACTION_ANGLE <= angle_diff <= 180  # 별과 최소 거리
+                and all(abs((self.angle - existing_angle + 360) % 360) > MIN_ORB_SPACING for existing_angle in existing_angles)  # 다른 장애물들과 최소 거리 유지
+            ):
                 break
         self.position = self.calculate_position()
 
@@ -58,12 +67,19 @@ class Star:
     def draw(self):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
+# 장애물 생성 함수 (여러 장애물 생성)
+def create_orbs(num_orbs, star_angle):
+    orbs = []
+    existing_angles = []
+    for _ in range(num_orbs):
+        orb = Orb(star_angle, existing_angles)
+        orbs.append(orb)
+        existing_angles.append(orb.angle)
+    return orbs
+
 # 초기화
 star = Star()
-existing_angles = []
-orbs = [Orb(existing_angles) for _ in range(3)]
-for orb in orbs:
-    existing_angles.append(orb.angle)
+orbs = create_orbs(2, star.angle)  # 처음에 두 개의 장애물 생성
 clock = pygame.time.Clock()
 score = 0
 
@@ -106,16 +122,12 @@ while True:
                 score += 1
                 passed_orbs += 1
                 orbs.remove(orb)
-                existing_angles.remove(orb.angle)
             else:
                 game_over()
 
-    # 3개의 원을 모두 통과하면 새 원 생성
-    if passed_orbs == 3:
-        passed_orbs = 0
-        orbs = [Orb(existing_angles) for _ in range(3)]
-        for orb in orbs:
-            existing_angles.append(orb.angle)
+    # 새로운 장애물 생성 (2~3개의 장애물 생성)
+    if len(orbs) == 0:
+        orbs = create_orbs(random.randint(2, 3), star.angle)
 
     # 별 그리기
     star.draw()
