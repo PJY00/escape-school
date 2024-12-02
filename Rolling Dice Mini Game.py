@@ -103,7 +103,7 @@ def main():
         if success_count == 3:
             set_text(screen, "Congratulations! You have earned one digit of the password", SCREEN_HEIGHT // 2 + 100, WHITE, 24)
             pygame.display.update()
-            pygame.time.dalay(30000)
+            pygame.time.dalay(5000)
             is_active=False
 
         roll_button.draw(screen)
