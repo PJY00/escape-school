@@ -24,20 +24,21 @@ texts = [
     "출력 테스트 두번째 줄",
     "출력 테스트 세번째 줄",
     "마지막 줄임. 출력 확인 바람.",
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec erat sit amet odio feugiat scelerisque. Suspendisse potenti. Fusce tincidunt ultricies sapien a vulputate. Cras venenatis sapien id nisi elementum, a tristique arcu cursus. Nullam id lacus id lectus sodales condimentum ac ut nisi. Donec ac dolor eu sem tincidun"
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec erat sit amet odio feugiat scelerisque. Suspendisse potenti. Fusce tincidunt ultricies sapien a vulputate. Cras venenatis sapien id nisi elementum, a tristique arcu cursus. Nullam id lacus id lectus sodales condimentum ac ut nisi. Donec ac dolor eu sem tincidun",
+    "안녕, 여기는 더미 텍스트야. 출력 테스트를 위해 준비된 문장이지. 긴 문장이 제대로 출력되는지 확인하려고 만들어졌어.  Pygame에서 글자 크기와 줄 바꿈이 잘 적용되는지 체크해봐. 한글은 영어와 다르게 글자 모양과 크기가 다양해서 출력할 때 신경 써야 해. 특히 긴 문장을 넣었을 때, 글자가 화면을 벗어나지 않도록 하는 게 중요해. 이 문장은 단순히 테스트를 위한 용도니까, 필요하면 마음대로 고쳐서 써도 돼. 그리고 한 줄 더 추가해볼게. 텍스트가 길어지면 알아서 줄 바꿈이 적용돼야 해. 출력 테스트를 다 했으면 다음 작업으로 넘어가면 돼."
 ]
 
 # 텍스트 출력 상태 변수
 current_text_index = 0  # 현재 텍스트 인덱스
 displayed_text = ""  # 현재까지 화면에 출력된 텍스트
 last_char_time = pygame.time.get_ticks()  # 마지막 글자 출력 시간
-char_delay = 100  # 글자 출력 간격 (밀리초)
+char_delay = 40  # 글자 출력 간격 (밀리초)
 
 # 고정 좌표 및 여백 설정
-left_margin = 30  # 좌측 여백
-right_margin = WIDTH - 30  # 우측 여백
+left_margin = 50  # 좌측 여백
+right_margin = WIDTH - 50  # 우측 여백
 line_height = 20  # 줄 간격
-text_y = HEIGHT - (len(texts) * 30) - 40  # 텍스트 시작 y 좌표
+text_y = HEIGHT - (len(texts) * 25) - 30  # 텍스트 시작 y 좌표
 
 # 메인 루프
 running = True
