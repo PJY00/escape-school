@@ -24,8 +24,8 @@ star_color_index = 0  # 별의 색상 인덱스
 passed_orbs = 0  # 통과한 원의 개수
 
 # 최소 반응 거리 및 장애물 간 간격
+MIN_STAR_DISTANCE = 60  # 별과 장애물 간 최소 각도 차이
 MIN_ORB_SPACING = 60  # 장애물 간 최소 각도 차이
-MIN_STAR_DISTANCE = 120  # 별과 장애물 간 최소 각도 차이
 
 # 원 클래스 (공전 궤도 상의 장애물)
 class Orb:
@@ -73,9 +73,14 @@ def create_orbs(num_orbs, star_angle):
     orbs = []
     existing_angles = []
     for _ in range(num_orbs):
-        orb = Orb(star_angle, existing_angles)
-        orbs.append(orb)
-        existing_angles.append(orb.angle)
+        while True:
+            orb = Orb(star_angle, existing_angles)
+            if all(
+                abs((orb.angle - angle + 360) % 360) >= MIN_ORB_SPACING for angle in existing_angles
+            ):
+                orbs.append(orb)
+                existing_angles.append(orb.angle)
+                break
     return orbs
 
 # 성공 함수
