@@ -65,7 +65,7 @@ class EnemyBullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()  # 총알의 위치와 크기 설정
         self.rect.centerx = x  # 총알의 X 위치 설정
         self.rect.top = y  # 총알의 Y 위치 설정
-        self.speedy = 8  # 총알의 Y 속도 (아래로 발사)
+        self.speedy = 5  # 총알의 Y 속도 (아래로 발사)
 
     def update(self):
         self.rect.y += self.speedy  # Y 위치 갱신 (아래로 이동)
@@ -93,15 +93,14 @@ class Mob(pygame.sprite.Sprite):
             self.rect.x = random.randrange(WIDTH - self.rect.width)  # 새로운 위치로 재설정
             self.rect.y = random.randrange(-100, -40)  # 화면 위쪽에서 다시 생성
             self.speedy = random.randrange(1, 4)  # 새로운 속도 설정
-             # 일정 시간마다 총알 발사
-        if pygame.time.get_ticks() - self.last_shot_time > 1000:  # 1초마다 발사
-            self.shoot()
-            self.last_shot_time = pygame.time.get_ticks()  # 마지막 발사 시간 갱신
 
     def shoot(self):
-        bullet = EnemyBullet(self.rect.centerx, self.rect.bottom)  # 적의 위치에서 총알 생성
-        all_sprites.add(bullet)  # 총알을 모든 스프라이트 그룹에 추가
-        enemy_bullets.add(bullet)  # 적 총알을 적 총알 그룹에 추가
+        current_time = pygame.time.get_ticks()  # 현재 시간 가져오기
+        if current_time - self.last_shot_time > 3000:  # 3초 간격으로 발사
+            bullet = EnemyBullet(self.rect.centerx, self.rect.bottom)  # 적의 위치에서 총알 생성
+            all_sprites.add(bullet)  # 총알을 모든 스프라이트 그룹에 추가
+            enemy_bullets.add(bullet)  # 적 총알을 적 총알 그룹에 추가
+            self.last_shot_time = current_time  # 마지막 발사 시간 갱신
 
 # 총알 클래스
 class Bullet(pygame.sprite.Sprite):
@@ -154,9 +153,14 @@ while running:
         mobs.add(m)  # 적 그룹에 추가
         score += 10  # 점수 10점 추가
         
-        # 플레이어와 적의 총알 간 충돌 처리
+    # 플레이어와 적의 총알 간 충돌 처리
     if pygame.sprite.spritecollide(player, enemy_bullets, False):  # 충돌 발생 시
         running = False  # 게임 종료
+        
+    # 랜덤으로 3개 적만 총알 발사
+    shooting_mobs = random.sample(mobs.sprites(), min(3, len(mobs.sprites())))
+    for mob in shooting_mobs:
+        mob.shoot()
         
     # 점수가 500점에 도달하면 게임 종료
     if score >= 300:
@@ -166,7 +170,8 @@ while running:
     hits = pygame.sprite.spritecollide(player, mobs, False)
     if hits:  # 충돌이 발생하면 게임 종료
         running = False
-
+        
+    
     screen.fill(BLACK)  # 화면을 검정색으로 채움
     all_sprites.draw(screen)  # 모든 스프라이트를 화면에 그리기
     
