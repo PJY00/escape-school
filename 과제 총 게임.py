@@ -162,7 +162,7 @@ while running:
     for mob in shooting_mobs:
         mob.shoot()
         
-    # 점수가 500점에 도달하면 게임 종료
+    # 점수가 300점에 도달하면 게임 종료
     if score >= 300:
         running = False
 
@@ -171,7 +171,6 @@ while running:
     if hits:  # 충돌이 발생하면 게임 종료
         running = False
         
-    
     screen.fill(BLACK)  # 화면을 검정색으로 채움
     all_sprites.draw(screen)  # 모든 스프라이트를 화면에 그리기
     
