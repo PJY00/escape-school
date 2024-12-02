@@ -15,6 +15,7 @@ pygame.display.set_caption("Orbit Game")
 COLORS = [(255, 0, 0), (0, 0, 255), (255, 255, 0)]  # 빨강, 파랑, 노랑
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+planet_color = (128, 0, 128)  # 보라색
 
 # 게임 변수
 PLANET_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)  # 행성 중심 좌표
@@ -29,9 +30,8 @@ MIN_ORB_SPACING = 60  # 장애물 간 최소 각도 차이
 
 # 원 클래스 (공전 궤도 상의 장애물)
 class Orb:
-    def __init__(self, star_angle, existing_angles):
-        self.radius = 20
-        self.color = random.choice(COLORS)
+    def __init__(self, star_angle, existing_angles, existing_colors):
+        self.radius = 10
         while True:
             # 새로운 각도를 생성
             self.angle = random.uniform(0, 360)
@@ -41,6 +41,10 @@ class Orb:
                 star_diff >= MIN_STAR_DISTANCE  # 별과 최소 거리 유지
                 and all(abs((self.angle - angle + 360) % 360) >= MIN_ORB_SPACING for angle in existing_angles)  # 다른 장애물들과 최소 거리 유지
             ):
+                break
+        while True:
+            self.color = random.choice(COLORS)
+            if self.color not in existing_colors:  # 기존 색상과 다른 색상 선택
                 break
         self.position = self.calculate_position()
 
@@ -56,7 +60,7 @@ class Orb:
 class Star:
     def __init__(self):
         self.color = COLORS[star_color_index]
-        self.radius = 10
+        self.radius = 13
         self.angle = 0
         self.update_position()
 
@@ -72,14 +76,16 @@ class Star:
 def create_orbs(num_orbs, star_angle):
     orbs = []
     existing_angles = []
+    existing_colors = []
     for _ in range(num_orbs):
         while True:
-            orb = Orb(star_angle, existing_angles)
+            orb = Orb(star_angle, existing_angles, existing_colors)
             if all(
                 abs((orb.angle - angle + 360) % 360) >= MIN_ORB_SPACING for angle in existing_angles
             ):
                 orbs.append(orb)
                 existing_angles.append(orb.angle)
+                existing_colors.append(orb.color)
                 break
     return orbs
 
@@ -127,7 +133,7 @@ while True:
     star.update_position()
 
     # 행성(중심 원) 그리기
-    pygame.draw.circle(screen, WHITE, PLANET_CENTER, 90)  # 중심 원 반지름을 90으로 늘림
+    pygame.draw.circle(screen, planet_color, PLANET_CENTER, 140)  # 중심 원 반지름 140, 색상 보라색
     pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
 
     # 장애물(원) 처리
