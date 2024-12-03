@@ -20,41 +20,53 @@ planet_color = (128, 0, 128)  # 보라색
 # 게임 변수
 PLANET_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)  # 행성 중심 좌표
 ORBIT_RADIUS = 250  # 공전 반지름
-star_speed = 2  # 별이 회전하는 속도
+star_speed = 2  # 별의 회전 속도
 star_color_index = 0  # 별의 색상 인덱스
-passed_orbs = 0  # 통과한 원의 개수
-
-# 최소 반응 거리 및 장애물 간 간격
-MIN_STAR_DISTANCE = 60  # 별과 장애물 간 최소 각도 차이
-MIN_ORB_SPACING = 60  # 장애물 간 최소 각도 차이
+direction_changed = False  # 회전 방향이 변경되었는지 확인
+MIN_ORB_DISTANCE_FROM_STAR = 120  # 장애물이 플레이어 별과 떨어져 있어야 하는 최소 거리
+MIN_DISTANCE_BETWEEN_ORBS = 80  # 장애물 간 최소 거리
 
 # 원 클래스 (공전 궤도 상의 장애물)
 class Orb:
-    def __init__(self, star_angle, existing_angles, existing_colors):
+    def __init__(self, star_position, existing_positions):
         self.radius = 10
-        while True:
-            # 새로운 각도를 생성
+        max_attempts = 100  # 장애물 생성 시도 제한
+        attempts = 0
+
+        while attempts < max_attempts:
             self.angle = random.uniform(0, 360)
-            # 별과의 거리 및 기존 각도와의 최소 간격 확인
-            star_diff = abs((self.angle - star_angle + 360) % 360)
-            if (
-                star_diff >= MIN_STAR_DISTANCE  # 별과 최소 거리 유지
-                and all(abs((self.angle - angle + 360) % 360) >= MIN_ORB_SPACING for angle in existing_angles)  # 다른 장애물들과 최소 거리 유지
-            ):
+            self.position = self.calculate_position()
+
+            # 별과의 거리 계산
+            distance_to_star = math.hypot(self.position[0] - star_position[0], self.position[1] - star_position[1])
+
+            # 기존 장애물들과의 거리 계산
+            valid_distance = all(
+                math.hypot(self.position[0] - pos[0], self.position[1] - pos[1]) >= MIN_DISTANCE_BETWEEN_ORBS
+                for pos in existing_positions
+            )
+
+            # 조건: 별과 거리, 장애물 간 거리 확인
+            if distance_to_star >= MIN_ORB_DISTANCE_FROM_STAR and valid_distance:
                 break
-        while True:
-            self.color = random.choice(COLORS)
-            if self.color not in existing_colors:  # 기존 색상과 다른 색상 선택
-                break
-        self.position = self.calculate_position()
+
+            attempts += 1
+
+        # 조건을 만족하지 못하면 기본 위치로 생성
+        if attempts == max_attempts:
+            print("Warning: Could not place orb with valid spacing. Placing orb at fallback position.")
+            self.position = PLANET_CENTER[0] + ORBIT_RADIUS, PLANET_CENTER[1]
+
+        self.color = random.choice(COLORS)
 
     def calculate_position(self):
         x = PLANET_CENTER[0] + ORBIT_RADIUS * math.cos(math.radians(self.angle))
         y = PLANET_CENTER[1] + ORBIT_RADIUS * math.sin(math.radians(self.angle))
-        return (int(x), int(y))
+        return int(x), int(y)
 
     def draw(self):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
+
 
 # 플레이어 별 클래스
 class Star:
@@ -67,27 +79,22 @@ class Star:
     def update_position(self):
         x = PLANET_CENTER[0] + ORBIT_RADIUS * math.cos(math.radians(self.angle))
         y = PLANET_CENTER[1] + ORBIT_RADIUS * math.sin(math.radians(self.angle))
-        self.position = (int(x), int(y))
+        self.position = int(x), int(y)
 
     def draw(self):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
-# 장애물 생성 함수 (여러 장애물 생성)
-def create_orbs(num_orbs, star_angle):
+
+# 장애물 생성 함수
+def create_orbs(num_orbs, star_position):
     orbs = []
-    existing_angles = []
-    existing_colors = []
+    existing_positions = []
     for _ in range(num_orbs):
-        while True:
-            orb = Orb(star_angle, existing_angles, existing_colors)
-            if all(
-                abs((orb.angle - angle + 360) % 360) >= MIN_ORB_SPACING for angle in existing_angles
-            ):
-                orbs.append(orb)
-                existing_angles.append(orb.angle)
-                existing_colors.append(orb.color)
-                break
+        orb = Orb(star_position, existing_positions)
+        orbs.append(orb)
+        existing_positions.append(orb.position)
     return orbs
+
 
 # 성공 함수
 def success():
@@ -100,11 +107,6 @@ def success():
     pygame.quit()
     sys.exit()
 
-# 초기화
-star = Star()
-orbs = create_orbs(2, star.angle)  # 처음에 두 개의 장애물 생성
-clock = pygame.time.Clock()
-score = 0
 
 # 게임 종료 함수
 def game_over():
@@ -115,6 +117,13 @@ def game_over():
     pygame.time.delay(2000)
     pygame.quit()
     sys.exit()
+
+
+# 초기화
+star = Star()
+orbs = create_orbs(2, star.position)  # 처음에 두 개의 장애물 생성
+clock = pygame.time.Clock()
+score = 0
 
 # 메인 게임 루프
 while True:
@@ -143,21 +152,17 @@ while True:
         if distance < orb.radius + star.radius:
             if orb.color == star.color:
                 score += 1
-                passed_orbs += 1
                 orbs.remove(orb)
             else:
                 game_over()
 
     # 점수 조건 체크
-    if score == 10:
-        star_speed = -star_speed  # 회전 방향 반대로 변경
-
     if score >= 25:
         success()
 
-    # 새로운 장애물 생성 (2~3개의 장애물 생성)
+    # 새로운 장애물 생성
     if len(orbs) == 0:
-        orbs = create_orbs(random.randint(2, 3), star.angle)
+        orbs = create_orbs(random.randint(2, 3), star.position)
 
     # 별 그리기
     star.draw()
