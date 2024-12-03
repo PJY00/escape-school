@@ -81,8 +81,8 @@ def main():
     while is_active:
         screen.fill(BLACK)
         screen.blit(bg, (0, 0))
-        set_text(screen, "Roll two dice and make their sum equal to 10!", 50, WHITE, 24)
-        set_text(screen, "If you succeed 3 times, you will receive one digit of the password.", 80, WHITE, 20)
+        set_text(screen, "두 개의 주사위를 굴려 합이 10이 되도록 하세요!", 50, WHITE, 24)
+        set_text(screen, "3번 성공하면 비밀번호의 한 자리를 얻을 수 있습니다.", 80, WHITE, 20)
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -98,12 +98,12 @@ def main():
             screen.blit(dice_images[dice_rolls[0]], (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 50))
             screen.blit(dice_images[dice_rolls[1]], (SCREEN_WIDTH // 2 + 50, SCREEN_HEIGHT // 2 - 50))
 
-        set_text(screen, f"Number of successes: {success_count}", SCREEN_HEIGHT - 200, WHITE)
+        set_text(screen, f"성공 횟수: {success_count}", SCREEN_HEIGHT - 200, WHITE)
 
         if success_count == 3:
-            set_text(screen, "Congratulations! You have earned one digit of the password", SCREEN_HEIGHT // 2 + 100, WHITE, 24)
+            set_text(screen, "비밀번호 한 자리를 얻었습니다.", SCREEN_HEIGHT // 2 + 100, WHITE, 24)
             pygame.display.update()
-            pygame.time.dalay(5000)
+            pygame.time.delay(5000)
             is_active=False
 
         roll_button.draw(screen)
