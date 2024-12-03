@@ -4,9 +4,17 @@ import random
 # 색상 정의
 white = (255, 255, 255)
 black = (0, 0, 0)
+gray = (200, 200, 200)
+
 
 # 폰트 설정
 #font = pygame.font.Font(None, 74)
+
+# 텍스트 입력 변수
+input_text = ""  
+input_box = pygame.Rect(200, 350, 240, 50)
+active = False  
+
 
 # 화면 크기
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
@@ -68,12 +76,30 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # 창 닫기 이벤트
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if input_box.collidepoint(event.pos):
+                    active = True  # 입력 상자 활성화
+                else:
+                    active = False
+            elif event.type == pygame.KEYDOWN:
+                if active:  # 활성화된 경우에만 입력 처리
+                    if event.key == pygame.K_BACKSPACE:
+                        input_text = input_text[:-1]  # 한 글자 지움
+                    else:
+                        input_text += event.unicode  # 입력 텍스트 추가
+
+       
 
         # 화면에 단어 표시
-        screen.fill(white)  # 화면 배경 채우기
+        screen.fill(white)  
         screen.blit(bg, (0, 0))
         text = font.render(scrambled_word, True, black)  # 텍스트 렌더링
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 3 - text.get_height() // 2))  # 화면 중앙에 출력
+         # 입력 상자 표시
+        pygame.draw.rect(screen, gray if active else black, input_box, 2)
+        input_surface = font.render(input_text, True, black)
+        screen.blit(input_surface, (input_box.x + 5, input_box.y + 5))
+        input_box.w = max(240, input_surface.get_width() + 10)  # 입력 상자 크기 조정
 
         pygame.display.flip()  # 화면 업데이트
 
