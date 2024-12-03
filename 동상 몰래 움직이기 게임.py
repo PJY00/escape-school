@@ -17,7 +17,11 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
 pygame.display.set_caption("동상 몰래 움직이기")
 
 # 폰트
-FONT = pygame.font.Font(None, 50)
+FONT = pygame.font.Font("NotoSansCJK-Regular.ttf", 50)
+
+# 이미지 로드
+statue_image = pygame.image.load("Assets/statue.png")
+player_image = pygame.image.load("Assets/player.png")
 
 # 동상 클래스
 class Statue:
@@ -33,8 +37,12 @@ class Statue:
             self.last_switch_time = pygame.time.get_ticks()
 
     def draw(self, screen):
-        color = RED if self.state == "open" else GREEN
-        pygame.draw.rect(screen, color, self.rect)
+        # 상태에 따라 이미지 출력
+        if self.state == "open":
+            pygame.draw.rect(screen, RED, self.rect, 2)  # 테두리 추가
+        else:
+            pygame.draw.rect(screen, GREEN, self.rect, 2)
+        screen.blit(statue_image, self.rect.topleft)
 
 # 플레이어 클래스
 class Player:
@@ -51,7 +59,7 @@ class Player:
             self.is_moving = True
 
     def draw(self, screen):
-        pygame.draw.rect(screen, BLACK, self.rect)
+        screen.blit(player_image, self.rect.topleft)
 
 # 게임 초기화
 def init_game():
