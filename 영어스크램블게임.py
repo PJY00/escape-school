@@ -53,7 +53,7 @@ scrambled_word = scramble_word(selected_word)  # 섞은 단어 생성
 
 # 텍스트 입력 변수
 input_text = ""  # 사용자가 입력한 텍스트
-input_box = pygame.Rect(200, 350, 240, 50)  # 입력 박스 위치와 크기
+input_box = pygame.Rect(185, 350, 240, 70)  # 입력 박스 위치와 크기
 active = False  # 입력 박스 활성화 여부
 
 def main():
@@ -67,41 +67,50 @@ def main():
     selected_word = random.choice(words)
     scrambled_word = scramble_word(selected_word)
     input_text = ""
-    input_box = pygame.Rect(200, 350, 240, 50)
+    
     active = False
 
     # 게임 루프
     running = True
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # 창 닫기 이벤트
+            if event.type == pygame.QUIT:  
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if input_box.collidepoint(event.pos):
-                    active = True  # 입력 상자 활성화
+                    active = True  
                 else:
                     active = False
             elif event.type == pygame.KEYDOWN:
-                if active:  # 활성화된 경우에만 입력 처리
+                if active:  
                     if event.key == pygame.K_BACKSPACE:
-                        input_text = input_text[:-1]  # 한 글자 지움
+                        input_text = input_text[:-1]  
                     else:
-                        input_text += event.unicode  # 입력 텍스트 추가
+                        input_text += event.unicode 
+
+                    if input_text == selected_word:  # 정답인 경우
+                    # 새로운 단어를 선택하고 섞음
+                     selected_word = random.choice(words)
+                     scrambled_word = scramble_word(selected_word)
+                     input_text = ""  # 입력 상자 초기화
+
+
 
        
 
         # 화면에 단어 표시
         screen.fill(white)  
         screen.blit(bg, (0, 0))
-        text = font.render(scrambled_word, True, black)  # 텍스트 렌더링
-        screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 3 - text.get_height() // 2))  # 화면 중앙에 출력
+        text = font.render(scrambled_word, True, black)  
+        screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 3 - text.get_height() // 2))  
+
          # 입력 상자 표시
         pygame.draw.rect(screen, gray if active else black, input_box, 2)
         input_surface = font.render(input_text, True, black)
         screen.blit(input_surface, (input_box.x + 5, input_box.y + 5))
-        input_box.w = max(240, input_surface.get_width() + 10)  # 입력 상자 크기 조정
+        input_box.w = max(240, input_surface.get_width() + 10)  
 
-        pygame.display.flip()  # 화면 업데이트
+        pygame.display.flip() 
 
     pygame.quit()
 
