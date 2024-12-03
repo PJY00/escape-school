@@ -79,7 +79,7 @@ def main():
     pygame.mixer.init()
     dice_images, bg = load_resources()
     success_sound=load_sounds()
-    
+
     roll_button = Button(SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT - 100, 150, 50, "Roll Dice")
 
     success_count = 0
@@ -112,7 +112,7 @@ def main():
         if success_count == 3:
             set_text(screen, "비밀번호 한 자리를 얻었습니다.", SCREEN_HEIGHT -150, WHITE, 24)
             pygame.display.update()
-            pygame.time.delay(5000)
+            pygame.time.delay(3000)
             is_active=False
 
         roll_button.draw(screen)
