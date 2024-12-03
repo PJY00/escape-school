@@ -3,9 +3,6 @@ import random
 from pygame.locals import *
 import os
 import matplotlib.pyplot as plt
-#plt.rcParams['font.family']='Neo둥근모'
-#plt.rcParams['axes.unicode_minus']=False
-
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
 DICE_SIZE = (100, 100)
@@ -60,17 +57,29 @@ class Button:
 
 def set_text(screen, text, y_offset, color=WHITE, font_size=30):
     """텍스트 출력 함수"""
-    font_path = 'NEODGM_CODE.TTF'  # 폰트 파일 경로
+    font_path = 'NEODGM_CODE.TTF'
     font = pygame.font.Font(font_path, 21)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
     screen.blit(text_surface, text_rect)
 
+def load_sounds():
+    """소리 로드 함수"""
+    try:
+        success_sound = pygame.mixer.Sound("sounds/success.wav")
+    except FileNotFoundError:
+        print("소리 파일이 누락되었습니다. sounds 폴더를 확인하세요.")
+        pygame.quit()
+        exit()
+    return success_sound
+
 def main():
     """메인 함수"""
     screen = init_game()
+    pygame.mixer.init()
     dice_images, bg = load_resources()
-
+    success_sound=load_sounds()
+    
     roll_button = Button(SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT - 100, 150, 50, "Roll Dice")
 
     success_count = 0
