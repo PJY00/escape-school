@@ -101,7 +101,7 @@ def main():
         set_text(screen, f"성공 횟수: {success_count}", SCREEN_HEIGHT - 200, WHITE)
 
         if success_count == 3:
-            set_text(screen, "비밀번호 한 자리를 얻었습니다.", SCREEN_HEIGHT // 2 + 100, WHITE, 24)
+            set_text(screen, "비밀번호 한 자리를 얻었습니다.", SCREEN_HEIGHT -150, WHITE, 24)
             pygame.display.update()
             pygame.time.delay(5000)
             is_active=False
