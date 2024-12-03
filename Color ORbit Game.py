@@ -149,6 +149,7 @@ while True:
         star_speed = -star_speed
         direction_changed = False 
 
+
     # 행성(중심 원) 그리기
     pygame.draw.circle(screen, planet_color, PLANET_CENTER, 140)  # 중심 원 반지름 140, 색상 보라색
     pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
