@@ -6,9 +6,11 @@ pygame.init()
 WIDTH, HEIGHT = 1200, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
-# 이미지 로드
-background_image = pygame.image.load('C:\\Users\\유정\\Documents\\escape-school.png')  # 업로드한 이미지 파일 경로
-background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # 초기 화면 크기에 맞게 이미지 크기 조정
+# 창 크기 변경 이벤트 처리
+for event in pygame.event.get():
+    if event.type == pygame.VIDEORESIZE:
+        WIDTH, HEIGHT = event.w, event.h
+        screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
 pygame.display.set_caption("Escape School")
 
@@ -16,7 +18,7 @@ WHITE = (255, 255, 255)
 
 font_path = 'neodgm_code.ttf'  # 폰트 파일 경로
 font_middle = pygame.font.Font(font_path, 48)  # 폰트 크기 48로 설정
-font_small = pygame.font.Font(font_path, 30)  # 폰트 크기 30로 설정
+font_small = pygame.font.Font(font_path, 30)  # 폰트 크기 48로 설정
 
 # 텍스트 렌더링
 game_name = font_middle.render("학교탈출", True, (255, 0, 0))  # 빨간색
@@ -35,7 +37,7 @@ def handle_click(pos):
     if start_text_rect.collidepoint(pos):
         print("Start button clicked!")  # 원하는 작업 실행
     elif load_text_rect.collidepoint(pos):
-        print("Load button clicked!")  # 원하는 작업 실행
+        print("load button clicked!")  # 원하는 작업 실행
     elif quit_text_rect.collidepoint(pos):
         print("Quit button clicked!")  # 프로그램 종료
         pygame.quit()  # pygame 리소스 해제
@@ -55,18 +57,16 @@ while running:
         if event.type == pygame.VIDEORESIZE:
             WIDTH, HEIGHT = event.w, event.h
             screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-            background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # 창 크기에 맞게 배경 이미지 크기 조정
     
-    # 배경 이미지 그리기
-    screen.blit(background_image, (0, 0))
+    screen.fill(WHITE)
 
-    # 텍스트 화면에 그리기
+     # 텍스트 화면에 그리기
     screen.blit(game_name, game_name_rect)
     screen.blit(start_text, start_text_rect)
     screen.blit(load_text, load_text_rect)
     screen.blit(quit_text, quit_text_rect)
 
     # 화면 업데이트
-    pygame.display.flip()
+    pygame.display.flip()  # 한 번만 호출
 
 pygame.quit()
