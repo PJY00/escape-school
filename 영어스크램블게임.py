@@ -37,6 +37,23 @@ def load_resources():
         exit()
     return bg
 
+def draw_underline(screen, word, font, x, y, input_text):
+    """밑줄과 입력된 문자 그리기"""
+    spacing = 10  # 밑줄 간격
+    start_x = x  # 첫 번째 밑줄 시작 위치
+
+    for i, char in enumerate(word):
+        # 밑줄 그리기
+        pygame.draw.line(screen, black, (start_x, y), (start_x + 30, y), 2)
+
+        # 입력된 문자 표시
+        if i < len(input_text):  # 입력된 문자만 표시
+            char_surface = font.render(input_text[i], True, black)
+            screen.blit(char_surface, (start_x + 5, y - 40))
+
+        # 다음 밑줄 위치로 이동
+        start_x += 30 + spacing
+
 
 # 단어 리스트
 words = ["apple", "cherry", "melon", "orange", "grape"]
@@ -53,14 +70,19 @@ scrambled_word = scramble_word(selected_word)  # 섞은 단어 생성
 
 # 텍스트 입력 변수
 input_text = ""  # 사용자가 입력한 텍스트
-input_box = pygame.Rect(185, 350, 240, 70)  # 입력 박스 위치와 크기
-active = False  # 입력 박스 활성화 여부
+
 
 def main():
  # 게임 초기화
     screen = init_game()
     bg = load_resources()
     font = pygame.font.Font(None, 74)  # 폰트 정의
+
+    # 입력 상자 관련 변수
+    global selected_word, scrambled_word  # 전역 변수 사용 선언
+    input_text = ""  # 사용자가 입력한 텍스트
+    active = False
+    input_box = pygame.Rect(185, 350, 240, 70)  # 입력 박스 위치와 크기
    
 
     # 게임 리소스
@@ -101,14 +123,14 @@ def main():
         # 화면에 단어 표시
         screen.fill(white)  
         screen.blit(bg, (0, 0))
-        text = font.render(scrambled_word, True, black)  
+        text = font.render(scrambled_word, True, white)  
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 3 - text.get_height() // 2))  
 
-         # 입력 상자 표시
-        pygame.draw.rect(screen, gray if active else black, input_box, 2)
-        input_surface = font.render(input_text, True, black)
-        screen.blit(input_surface, (input_box.x + 5, input_box.y + 5))
-        input_box.w = max(240, input_surface.get_width() + 10)  
+        
+
+        # 밑줄과 입력된 문자 표시
+        draw_underline(screen, selected_word, font, 185, 400, input_text)
+
 
         pygame.display.flip() 
 
