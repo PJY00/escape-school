@@ -16,6 +16,8 @@ GREEN = (0, 255, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
 pygame.display.set_caption("동상 몰래 움직이기")
 
+# 기본 폰트 설정
+FONT = pygame.font.SysFont(None, 50)  # 시스템 기본 폰트, 크기 50
 
 # 이미지 로드
 statue_image = pygame.image.load("Assets/statue.png")
@@ -64,17 +66,12 @@ def init_game():
     statue = Statue((50, HEIGHT // 2 - 50))
     player = Player((WIDTH - 100, HEIGHT // 2 - 25))
     clock = pygame.time.Clock()
-    game_over = False
-    success = False
+    return statue, player, clock
 
 # 게임 로직
 def main():
-    
-    
+    statue, player, clock = init_game()
     running = True
-    statue = Statue((50, HEIGHT // 2 - 50))
-    player = Player((WIDTH - 100, HEIGHT // 2 - 25))
-    clock = pygame.time.Clock()
     game_over = False
     success = False
     
@@ -106,27 +103,24 @@ def main():
         statue.draw(screen)
         player.draw(screen)
 
-        # # 동상 상태 텍스트
-        # state_text = FONT.render(
-        #     "눈 뜸!" if statue.state == "open" else "눈 감음!", True, RED if statue.state == "open" else GREEN
-        # )
-        # screen.blit(state_text, (WIDTH // 2 - 100, 50))
-
         pygame.display.flip()
         clock.tick(30)
 
     # 결과 화면
+    show_result(game_over, success)
+
+def show_result(game_over, success):
     screen.fill(WHITE)
-    # if game_over:
-    #     result_text = FONT.render("GAME OVER!", True, RED)
-    # elif success:
-    #     result_text = FONT.render("SUCCESS!", True, GREEN)
-    #screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
+    if game_over:
+        result_text = FONT.render("GAME OVER!", True, RED)
+    elif success:
+        result_text = FONT.render("SUCCESS!", True, GREEN)
+    # 결과 텍스트 화면에 출력
+    screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
     pygame.display.flip()
     pygame.time.delay(3000)
 
     pygame.quit()
-    
 
 if __name__ == "__main__":
     main()
