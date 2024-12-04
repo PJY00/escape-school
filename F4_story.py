@@ -59,6 +59,8 @@ def F4_story():
         else:
             # 모든 텍스트가 출력된 후의 처리
             displayed_text = "모든 텍스트가 출력 끝!"
+            pygame.time.delay(300)
+            running = False
         
         # 텍스트를 화면에 렌더링 (줄 바꿈 처리)
         words = displayed_text.split(' ')  # 공백 기준으로 단어 분리
