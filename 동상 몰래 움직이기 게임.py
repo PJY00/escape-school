@@ -16,8 +16,6 @@ GREEN = (0, 255, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
 pygame.display.set_caption("동상 몰래 움직이기")
 
-# 폰트
-FONT = pygame.font.Font("NotoSansCJK-Regular.ttf", 50)
 
 # 이미지 로드
 statue_image = pygame.image.load("Assets/statue.png")
@@ -108,22 +106,22 @@ def main():
         statue.draw(screen)
         player.draw(screen)
 
-        # 동상 상태 텍스트
-        state_text = FONT.render(
-            "눈 뜸!" if statue.state == "open" else "눈 감음!", True, RED if statue.state == "open" else GREEN
-        )
-        screen.blit(state_text, (WIDTH // 2 - 100, 50))
+        # # 동상 상태 텍스트
+        # state_text = FONT.render(
+        #     "눈 뜸!" if statue.state == "open" else "눈 감음!", True, RED if statue.state == "open" else GREEN
+        # )
+        # screen.blit(state_text, (WIDTH // 2 - 100, 50))
 
         pygame.display.flip()
         clock.tick(30)
 
     # 결과 화면
     screen.fill(WHITE)
-    if game_over:
-        result_text = FONT.render("GAME OVER!", True, RED)
-    elif success:
-        result_text = FONT.render("SUCCESS!", True, GREEN)
-    screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
+    # if game_over:
+    #     result_text = FONT.render("GAME OVER!", True, RED)
+    # elif success:
+    #     result_text = FONT.render("SUCCESS!", True, GREEN)
+    #screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
     pygame.display.flip()
     pygame.time.delay(3000)
 
