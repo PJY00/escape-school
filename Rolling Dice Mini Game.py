@@ -2,6 +2,7 @@ import pygame
 import random
 from pygame.locals import *
 import os
+import matplotlib.pyplot as plt
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
 DICE_SIZE = (100, 100)
@@ -56,15 +57,28 @@ class Button:
 
 def set_text(screen, text, y_offset, color=WHITE, font_size=30):
     """텍스트 출력 함수"""
-    font = pygame.font.SysFont("arial", font_size)
+    font_path = 'NEODGM_CODE.TTF'
+    font = pygame.font.Font(font_path, 21)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
     screen.blit(text_surface, text_rect)
 
+def load_sounds():
+    """소리 로드 함수"""
+    try:
+        success_sound = pygame.mixer.Sound("sounds/success.wav")
+    except FileNotFoundError:
+        print("소리 파일이 누락되었습니다. sounds 폴더를 확인하세요.")
+        pygame.quit()
+        exit()
+    return success_sound
+
 def main():
     """메인 함수"""
     screen = init_game()
+    pygame.mixer.init()
     dice_images, bg = load_resources()
+    success_sound=load_sounds()
 
     roll_button = Button(SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT - 100, 150, 50, "Roll Dice")
 
@@ -76,8 +90,8 @@ def main():
     while is_active:
         screen.fill(BLACK)
         screen.blit(bg, (0, 0))
-        set_text(screen, "2개의 주사위를 굴려 합이 10이 되게 만드세요!", 50, WHITE, 24)
-        set_text(screen, "3번 성공하면 비밀번호의 한 자리를 드립니다.", 80, WHITE, 20)
+        set_text(screen, "두 개의 주사위를 굴려 합이 10이 되도록 하세요!", 50, WHITE, 24)
+        set_text(screen, "3번 성공하면 비밀번호의 한 자리를 얻을 수 있습니다.", 80, WHITE, 20)
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -95,8 +109,11 @@ def main():
 
         set_text(screen, f"성공 횟수: {success_count}", SCREEN_HEIGHT - 200, WHITE)
 
-        if success_count >= 3:
-            set_text(screen, "축하합니다! 비밀번호의 한 자리를 얻었습니다.", SCREEN_HEIGHT // 2 + 100, WHITE, 24)
+        if success_count == 3:
+            set_text(screen, "비밀번호 한 자리를 얻었습니다.", SCREEN_HEIGHT -150, WHITE, 24)
+            pygame.display.update()
+            pygame.time.delay(3000)
+            is_active=False
 
         roll_button.draw(screen)
         pygame.display.update()
