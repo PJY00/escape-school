@@ -72,6 +72,11 @@ def run_game():
                 self.rect.y = random.randrange(-100, -40)
                 self.speedy = random.randrange(1, 4)
 
+        def shoot(self):
+            bullet = EnemyBullet(self.rect.centerx, self.rect.bottom)
+            all_sprites.add(bullet)
+            enemy_bullets.add(bullet)
+
     class Bullet(pygame.sprite.Sprite):
         def __init__(self, x, y):
             super().__init__()
@@ -87,10 +92,26 @@ def run_game():
             if self.rect.bottom < 0:
                 self.kill()
 
+    class EnemyBullet(pygame.sprite.Sprite):
+        def __init__(self, x, y):
+            super().__init__()
+            self.image = pygame.Surface((10, 10))
+            self.image.fill(RED)
+            self.rect = self.image.get_rect()
+            self.rect.centerx = x
+            self.rect.top = y
+            self.speedy = 5
+
+        def update(self):
+            self.rect.y += self.speedy
+            if self.rect.top > HEIGHT:
+                self.kill()
+
     # 그룹 생성
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
     bullets = pygame.sprite.Group()
+    enemy_bullets = pygame.sprite.Group()
 
     # 플레이어 생성
     player = Player()
@@ -104,6 +125,8 @@ def run_game():
 
     # 게임 루프
     running = True
+    last_shoot_time = pygame.time.get_ticks()
+
     while running:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -119,13 +142,21 @@ def run_game():
         # 충돌 처리
         hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
         for hit in hits:
+            score += 10
             mob = Mob()
             all_sprites.add(mob)
             mobs.add(mob)
-            score += 10
 
-        if pygame.sprite.spritecollide(player, mobs, False):
+        if pygame.sprite.spritecollide(player, enemy_bullets, False) or pygame.sprite.spritecollide(player, mobs, False):
             running = False
+
+        # 랜덤으로 3개의 적만 총알 발사
+        current_time = pygame.time.get_ticks()
+        if current_time - last_shoot_time > 2000:  # 2초 간격
+            shooting_mobs = random.sample(mobs.sprites(), min(3, len(mobs)))
+            for mob in shooting_mobs:
+                mob.shoot()
+            last_shoot_time = current_time
 
         # 화면 렌더링
         screen.fill(BLACK)
