@@ -1,6 +1,7 @@
 import pygame
 import sys
-from F4_story import F4_story  # 다른 모듈에서 함수 가져오기
+from F4_story import F4_story 
+from shooter import run_game
 
 # 화면 크기 설정
 WIDTH, HEIGHT = 1200, 700
@@ -19,7 +20,7 @@ def main():
 
     # 폰트 설정
     font_path = 'NEODGM_CODE.TTF'
-    font = pygame.font.Font(font_path, 24)
+    font = pygame.font.Font(font_path, 20)
 
     # 사각형 버튼 정의
     button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 200, 100)
@@ -66,16 +67,17 @@ def main():
         # 텍스트 렌더링
         if text_visible:
             # 반투명 텍스트 상자 생성
-            text_box = pygame.Surface((WIDTH, 100), pygame.SRCALPHA)
+            text_box = pygame.Surface((WIDTH, 200), pygame.SRCALPHA)
             text_box.fill(TRANSPARENT_BLACK)
-            screen.blit(text_box, (0, HEIGHT - 100))  # 하단에 반투명 상자 표시
+            screen.blit(text_box, (0, HEIGHT - 200))  # 하단에 반투명 상자 표시
             text_surface = font.render(display_text, True, WHITE)
-            screen.blit(text_surface, (50, HEIGHT - 75))  # 상자 위에 텍스트 표시
+            screen.blit(text_surface, (50, HEIGHT - 180))  # 상자 위에 텍스트 표시
 
         pygame.display.flip()
         clock.tick(60)
         
     # 텍스트 완료 후 다른 모듈 실행
+    run_game()
     F4_story()
 
     pygame.quit()
