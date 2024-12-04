@@ -63,22 +63,22 @@ def set_text(screen, text, y_offset, color=WHITE, font_size=30):
     text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
     screen.blit(text_surface, text_rect)
 
-def load_sounds():
-    """소리 로드 함수"""
-    try:
-        success_sound = pygame.mixer.Sound("sounds/success.wav")
-    except FileNotFoundError:
-        print("소리 파일이 누락되었습니다. sounds 폴더를 확인하세요.")
-        pygame.quit()
-        exit()
-    return success_sound
+#def load_sounds():
+ #   """소리 로드 함수"""
+  #  try:
+   #     success_sound = pygame.mixer.Sound("sounds/success.wav")
+    #except FileNotFoundError:
+     #   print("소리 파일이 누락되었습니다. sounds 폴더를 확인하세요.")
+      #  pygame.quit()
+       # exit()
+    #return success_sound
 
 def main():
     """메인 함수"""
     screen = init_game()
     pygame.mixer.init()
     dice_images, bg = load_resources()
-    success_sound=load_sounds()
+    #success_sound=load_sounds()
 
     roll_button = Button(SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT - 100, 150, 50, "Roll Dice")
 
