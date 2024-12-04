@@ -3,8 +3,8 @@ import random
 
 def run_game():
     # 화면 크기 설정
-    WIDTH = 480
-    HEIGHT = 600
+    WIDTH = 1200
+    HEIGHT = 700
     FPS = 60
 
     # 색상 정의
@@ -118,7 +118,7 @@ def run_game():
     all_sprites.add(player)
 
     # 적 생성
-    for _ in range(5):
+    for _ in range(8):
         mob = Mob()
         all_sprites.add(mob)
         mobs.add(mob)
@@ -153,7 +153,7 @@ def run_game():
         # 랜덤으로 3개의 적만 총알 발사
         current_time = pygame.time.get_ticks()
         if current_time - last_shoot_time > 2000:  # 2초 간격
-            shooting_mobs = random.sample(mobs.sprites(), min(3, len(mobs)))
+            shooting_mobs = random.sample(mobs.sprites(), min(5, len(mobs)))
             for mob in shooting_mobs:
                 mob.shoot()
             last_shoot_time = current_time
