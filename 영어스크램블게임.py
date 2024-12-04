@@ -8,8 +8,7 @@ gray = (200, 200, 200)
 
 
 # 폰트 설정
-#font = pygame.font.Font(None, 74)
-
+#font = pygame.font.Font(None,
 # 텍스트 입력 변수
 input_text = ""  
 input_box = pygame.Rect(200, 350, 240, 50)
@@ -38,7 +37,7 @@ def load_resources():
     return bg
 
 def draw_underline(screen, word, font, x, y, input_text):
-    """밑줄과 입력된 문자 그리기"""
+    #밑줄과 입력된 문자 그리기
     spacing = 10  # 밑줄 간격
     start_x = x  # 첫 번째 밑줄 시작 위치
 
