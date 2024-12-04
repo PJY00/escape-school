@@ -167,5 +167,3 @@ def run_game():
         screen.blit(score_text, (10, 10))
 
         pygame.display.flip()
-
-    pygame.quit()

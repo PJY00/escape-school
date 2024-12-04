@@ -78,6 +78,7 @@ def main():
         
     # 텍스트 완료 후 다른 모듈 실행
     run_game()
+    pygame.time.delay(100)
     F4_story()
 
     pygame.quit()
