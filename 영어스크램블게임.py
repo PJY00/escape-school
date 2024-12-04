@@ -17,6 +17,7 @@ def scramble_word(word):
     word_list = list(word)
     random.shuffle(word_list)
     return "".join(word_list)
+    spacing=40
 
 # 게임 초기화
 def init_game():
@@ -87,7 +88,7 @@ def main():
 
         screen.fill(white)
         screen.blit(bg, (0, 0))
-        scrambled_text = font.render(scrambled_word, True, black)
+        scrambled_text = font.render(scrambled_word, True, white)
         screen.blit(scrambled_text, (SCREEN_WIDTH // 2 - scrambled_text.get_width() // 2, 150))
         draw_underline(screen, selected_word, font, 185, 400, input_text)
         score_text = font.render(f"점수: {score}/{total_questions}", True, black)
