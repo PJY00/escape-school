@@ -17,7 +17,7 @@ def scramble_word(word):
     word_list = list(word)
     random.shuffle(word_list)
     return "".join(word_list)
-    spacing=40
+    
 
 # 게임 초기화
 def init_game():
@@ -34,7 +34,18 @@ def load_resources():
     bg = pygame.transform.scale(bg, (new_width, new_height))
     return bg
 
-# 밑줄과 입력 표시
+# 점수 표시 함수
+def draw_score(screen, font, score, total_questions):
+    # 점수 칸 배경 색과 위치
+    score_bg = pygame.Rect(10, 10, 200, 60)
+    pygame.draw.rect(screen, gray, score_bg)
+    pygame.draw.rect(screen, black, score_bg, 2)  # 테두리
+
+    # 점수 텍스트
+    score_text = font.render(f"점수: {score}/{total_questions}", True, black)
+    screen.blit(score_text, (score_bg.x + 10, score_bg.y + 10))
+
+ #밑줄과 입력 표시
 def draw_underline(screen, word, font, x, y, input_text):
     spacing = 20
     line_width = 30
@@ -43,8 +54,7 @@ def draw_underline(screen, word, font, x, y, input_text):
     for i, char in enumerate(word):
         pygame.draw.line(screen, black, (start_x, y), (start_x + line_width, y), 2)
         if i < len(input_text):
-            char_surface = font.render(input_text[i], True, black)
-            screen.blit(char_surface, (start_x + 8, y - 40))
+           screen.blit(char_surface, (start_x + 8, y - 40))
         start_x += line_width + spacing
 
 # 메인 함수
