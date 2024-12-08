@@ -54,8 +54,9 @@ def draw_underline(screen, word, font, x, y, input_text):
     for i, char in enumerate(word):
         pygame.draw.line(screen, black, (start_x, y), (start_x + line_width, y), 2)
         if i < len(input_text):
-           screen.blit(char_surface, (start_x + 8, y - 40))
-        start_x += line_width + spacing
+            char_surface=font.render(input_text[i],True,black)
+            screen.blit(char_surface, (start_x + 8, y - 40))
+            start_x += line_width + spacing
 
 # 메인 함수
 def main():
@@ -69,7 +70,7 @@ def main():
     score = 0
     total_questions = 5
     current_question = 0
-    active = False
+    active = True
     input_box = pygame.Rect(185, 350, 240, 50)
 
     running = True
