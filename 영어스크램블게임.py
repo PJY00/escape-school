@@ -36,14 +36,14 @@ def load_resources():
 
 # 점수 표시 함수
 def draw_score(screen, font, score, total_questions):
-    # 점수 칸 배경 색과 위치
-    score_bg = pygame.Rect(10, 10, 200, 60)
-    pygame.draw.rect(screen, gray, score_bg)
-    pygame.draw.rect(screen, black, score_bg, 2)  # 테두리
-
+   
     # 점수 텍스트
-    score_text = font.render(f"점수: {score}/{total_questions}", True, black)
-    screen.blit(score_text, (score_bg.x + 10, score_bg.y + 10))
+    score_text = font.render(f"{score}/{total_questions}", True, black)
+    
+    #텍스트 위치
+    text_x=10
+    text_y=10
+    screen.bilt(score_text,(text_x,text_y))
 
  #밑줄과 입력 표시
 def draw_underline(screen, word, font, x, y, input_text):
@@ -87,7 +87,7 @@ def main():
                         score += 1
                         current_question += 1
                         if current_question == total_questions:
-                            print(f"게임 종료! 최종 점수: {score}/{total_questions}")
+                            print(f"게임 종료! ")
                             running = False
                         else:
                             selected_word = random.choice(words)
@@ -101,7 +101,7 @@ def main():
         scrambled_text = font.render(scrambled_word, True, white)
         screen.blit(scrambled_text, (SCREEN_WIDTH // 2 - scrambled_text.get_width() // 2, 150))
         draw_underline(screen, selected_word, font, 185, 400, input_text)
-        score_text = font.render(f"점수: {score}/{total_questions}", True, black)
+        score_text = font.render(f" {score}/{total_questions}", True, black)
         screen.blit(score_text, (10, 10))
         pygame.display.flip()
 
