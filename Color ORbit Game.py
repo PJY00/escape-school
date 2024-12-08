@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import math
+import time
 
 # Constants
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
@@ -11,7 +12,6 @@ COLORS = [(255, 0, 0), (0, 0, 255), (255, 255, 0)]  # Red, Blue, Yellow
 PLANET_COLOR = (128, 0, 128)  # Purple
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-
 
 # Orb Class
 class Orb:
@@ -44,7 +44,6 @@ class Orb:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
-
 # Star Class
 class Star:
     def __init__(self):
@@ -66,7 +65,6 @@ class Star:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
-
 # Utility Functions
 def create_orbs(num_orbs, star_position):
     orbs = []
@@ -76,7 +74,6 @@ def create_orbs(num_orbs, star_position):
         orbs.append(orb)
         existing_positions.append(orb.position)
     return orbs
-
 
 def success(screen):
     font = pygame.font.Font(None, 72)
@@ -88,23 +85,68 @@ def success(screen):
     pygame.quit()
     sys.exit()
 
-
-def game_over(screen):
+def game_over(screen, score):
     font = pygame.font.Font(None, 72)
     text = font.render("Game Over", True, WHITE)
+    score_text = pygame.font.Font(None, 48).render(f"Score: {score}", True, WHITE)
+
     screen.fill(BLACK)
-    screen.blit(text, (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 50))
+    screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - 50))
+    screen.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
+
     pygame.display.flip()
     pygame.time.delay(2000)
     pygame.quit()
     sys.exit()
 
+def show_instructions(screen):
+    font_title = pygame.font.Font(None, 48)
+    font_text = pygame.font.Font(None, 28)
+
+    title_text = font_title.render("Orbit Game Instructions", True, WHITE)
+    instructions = [
+        "1. Use SPACE to change the star's color.",
+        "2. Match the star's color to the orb's color to score points.",
+        "3. Avoid orbs with mismatched colors - it's Game Over!",
+        "4. At 10 and 20 points, the star's rotation direction changes.",
+        "Press SPACE to start the game!",
+    ]
+
+    screen.fill(BLACK)
+    screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, 100))
+    for i, line in enumerate(instructions):
+        text = font_text.render(line, True, WHITE)
+        screen.blit(text, (50, 200 + i * 40))
+
+    pygame.display.flip()
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+
+def show_countdown(screen):
+    font = pygame.font.Font(None, 72)
+    for i in range(3, 0, -1):
+        screen.fill(BLACK)
+        countdown_text = font.render(str(i), True, WHITE)
+        screen.blit(countdown_text, (SCREEN_WIDTH // 2 - countdown_text.get_width() // 2, SCREEN_HEIGHT // 2 - 50))
+        pygame.display.flip()
+        pygame.time.delay(1000)
 
 # Main Game Loop
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Orbit Game")
+
+    show_instructions(screen)  # Show instructions before starting the game
+    show_countdown(screen)  # Show countdown before the game starts
 
     star = Star()
     orbs = create_orbs(2, star.position)
@@ -149,7 +191,7 @@ def main():
                     score += 1
                     orbs.remove(orb)
                 else:
-                    game_over(screen)
+                    game_over(screen, score)
 
         # Check for success
         if score >= 25:
