@@ -19,15 +19,19 @@ pygame.display.set_caption("동상 몰래 움직이기")
 # 기본 폰트 설정
 FONT = pygame.font.SysFont(None, 50)  # 시스템 기본 폰트, 크기 50
 
-# 이미지 로드
+# 이미지 로드 및 크기 조정
 statue_image = pygame.image.load("Assets/statue.png")
+statue_image = pygame.transform.scale(statue_image, (110, 220))  # 동상 크기 조정
+
 player_image = pygame.image.load("Assets/player.png")
+player_image = pygame.transform.scale(player_image, (100, 120))  # 플레이어 크기 조정
 
 # 동상 클래스
 class Statue:
     def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1], 50, 100)
-        self.state = "closed"  # 초기 상태: 눈 감음
+        self.image = statue_image
+        self.rect = self.image.get_rect(topleft=pos)
+        self.state = "closed"
         self.last_switch_time = pygame.time.get_ticks()
 
     def update(self):
@@ -37,34 +41,33 @@ class Statue:
             self.last_switch_time = pygame.time.get_ticks()
 
     def draw(self, screen):
-        # 상태에 따라 이미지 출력
+        screen.blit(self.image, self.rect.topleft)
         if self.state == "open":
-            pygame.draw.rect(screen, RED, self.rect, 2)  # 테두리 추가
+            pygame.draw.rect(screen, RED, self.rect, 2)
         else:
             pygame.draw.rect(screen, GREEN, self.rect, 2)
-        screen.blit(statue_image, self.rect.topleft)
 
 # 플레이어 클래스
 class Player:
     def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1], 50, 50)
+        self.image = player_image
+        self.rect = self.image.get_rect(topleft=pos)
         self.speed = 5
         self.is_moving = False
 
     def update(self, keys):
-        # 플레이어 이동
         self.is_moving = False
         if keys[K_LEFT]:
             self.rect.x -= self.speed
             self.is_moving = True
 
     def draw(self, screen):
-        screen.blit(player_image, self.rect.topleft)
+        screen.blit(self.image, self.rect.topleft)
 
 # 게임 초기화
 def init_game():
-    statue = Statue((50, HEIGHT // 2 - 50))
-    player = Player((WIDTH - 100, HEIGHT // 2 - 25))
+    statue = Statue((50, HEIGHT // 2 - 55))
+    player = Player((WIDTH - 100, HEIGHT // 2 - -50))
     clock = pygame.time.Clock()
     return statue, player, clock
 
@@ -124,3 +127,4 @@ def show_result(game_over, success):
 
 if __name__ == "__main__":
     main()
+
