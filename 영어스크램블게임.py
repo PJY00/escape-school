@@ -7,7 +7,7 @@ black = (0, 0, 0)
 gray = (200, 200, 200)
 
 # 화면 크기
-SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
+SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
 
 # 단어 리스트
 words = ["apple", "cherry", "mango", "orange", "grape","kiwi","plum"]
@@ -43,7 +43,7 @@ def draw_score(screen, font, score, total_questions):
     #텍스트 위치
     text_x=10
     text_y=10
-    screen.bilt(score_text,(text_x,text_y))
+    screen.blit(score_text,(text_x,text_y))
 
  #밑줄과 입력 표시
 def draw_underline(screen, word, font, x, y, input_text):
@@ -51,7 +51,7 @@ def draw_underline(screen, word, font, x, y, input_text):
     line_width = 30
     start_x = x
 
-    for i, char in enumerate(word):
+    for i in range(len(word)):
         pygame.draw.line(screen, black, (start_x, y), (start_x + line_width, y), 2)
         if i < len(input_text):
             char_surface=font.render(input_text[i],True,black)
