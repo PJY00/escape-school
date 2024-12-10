@@ -41,15 +41,15 @@ def draw_score(screen, font, score, total_questions):
     score_text = font.render(f"{score}/{total_questions}", True, black)
     
     #텍스트 위치
-    text_x=10
+    text_x=50
     text_y=10
     screen.blit(score_text,(text_x,text_y))
 
  #밑줄과 입력 표시
 def draw_underline(screen, word, font, x, y, input_text):
-    spacing = 20
-    line_width = 30
-    start_x = x
+    spacing = 25
+    line_width = 50
+    start_x = x+ 245
 
     for i in range(len(word)):
         pygame.draw.line(screen, black, (start_x, y), (start_x + line_width, y), 2)
@@ -73,15 +73,15 @@ def main():
     total_questions = 5
     current_question = 0
     active = True
-    input_box = pygame.Rect(185, 350, 240, 50)
+   
+    underline_start_x = 500  # 원래 185에서 오른쪽으로 이동
+    underline_start_y = 400
 
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                active = input_box.collidepoint(event.pos)
             elif event.type == pygame.KEYDOWN and active:
                 if event.key == pygame.K_BACKSPACE:
                     input_text = input_text[:-1]
@@ -97,10 +97,13 @@ def main():
                             scrambled_word = scramble_word(selected_word)
                             input_text = ""
                 else:
-                    input_text += event.unicode
+                    if len(input_text) < len(selected_word):
+                        input_text += event.unicode
 
         screen.fill(white)
         screen.blit(bg, (0, 0))
+
+        #섞인 단어 표시
         scrambled_text = font.render(scrambled_word, True, white)
         screen.blit(scrambled_text, (SCREEN_WIDTH // 2 - scrambled_text.get_width() // 2, 150))
         draw_underline(screen, selected_word, font, 185, 400, input_text)
