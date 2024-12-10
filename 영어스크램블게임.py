@@ -42,21 +42,22 @@ def draw_score(screen, font, score, total_questions):
     
     #텍스트 위치
     text_x=50
-    text_y=10
+    text_y=8
     screen.blit(score_text,(text_x,text_y))
 
  #밑줄과 입력 표시
 def draw_underline(screen, word, font, x, y, input_text):
     spacing = 25
     line_width = 50
-    start_x = x+ 245
+    start_x = x+ 237
+    line_y=y+ 30
 
     for i in range(len(word)):
-        pygame.draw.line(screen, black, (start_x, y), (start_x + line_width, y), 2)
+        pygame.draw.line(screen, black, (start_x, y), (start_x + line_width, y), 5)
         if i < len(input_text):
             char_surface=font.render(input_text[i],True,black)
             char_x = start_x + (line_width - char_surface.get_width()) // 2
-            char_y = y - 50
+            char_y = line_y - 80
             screen.blit(char_surface, (char_x,char_y))
         start_x += line_width + spacing
 
@@ -73,9 +74,6 @@ def main():
     total_questions = 5
     current_question = 0
     active = True
-   
-    underline_start_x = 500  # 원래 185에서 오른쪽으로 이동
-    underline_start_y = 400
 
     running = True
     while running:
