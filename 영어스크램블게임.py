@@ -1,13 +1,14 @@
 import pygame
 import random
 
+
+# 화면 크기 설정
+SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
+
 # 색상 정의
 white = (255, 255, 255)
 black = (0, 0, 0)
 gray = (200, 200, 200)
-
-# 화면 크기
-SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
 
 # 단어 리스트
 words = ["apple", "cherry", "mango", "orange", "grape","kiwi","plum"]
@@ -73,7 +74,10 @@ def show_end_screen(screen, font):
 def main():
     screen = init_game()
     bg = load_resources()
-    font = pygame.font.Font(None, 100)
+
+    #폰트설정
+    font_path = 'NEODGM_CODE.TTF'
+    font = pygame.font.Font(font_path, 60)
 
     selected_word = random.choice(words)
     scrambled_word = scramble_word(selected_word)
