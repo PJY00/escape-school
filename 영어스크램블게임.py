@@ -62,7 +62,7 @@ def draw_underline(screen, word, font, x, y, input_text):
 def main():
     screen = init_game()
     bg = load_resources()
-    font = pygame.font.Font(None, 74)
+    font = pygame.font.Font(None, 100)
 
     selected_word = random.choice(words)
     scrambled_word = scramble_word(selected_word)
