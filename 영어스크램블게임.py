@@ -57,9 +57,17 @@ def draw_underline(screen, word, font, x, y, input_text):
         if i < len(input_text):
             char_surface=font.render(input_text[i],True,black)
             char_x = start_x + (line_width - char_surface.get_width()) // 2
-            char_y = line_y - 80
+            char_y = line_y - 85
             screen.blit(char_surface, (char_x,char_y))
         start_x += line_width + spacing
+
+#새로운 화면 표시(게임 종료 후)
+def show_end_screen(screen, font):
+    screen.fill(white)
+    message = font.render("congratulations! Hint: 2", True, black)
+    message_rect = message.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+    screen.blit(message, message_rect)
+    pygame.display.flip()
 
 # 메인 함수
 def main():
@@ -88,8 +96,10 @@ def main():
                         score += 1
                         current_question += 1
                         if current_question == total_questions:
-                            print(f"게임 종료! ")
-                            running = False
+                            show_end_screen(screen,font)
+                            pygame.time.delay(5000)
+                            running=False
+
                         else:
                             selected_word = random.choice(words)
                             scrambled_word = scramble_word(selected_word)
