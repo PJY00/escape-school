@@ -11,7 +11,7 @@ black = (0, 0, 0)
 gray = (200, 200, 200)
 
 # 단어 리스트
-words = ["apple", "cherry", "mango", "orange", "grape","kiwi","plum"]
+words = ["apple", "cherry", "mango", "orange","kiwi","plum"]
 
 # 단어 섞기 함수
 def scramble_word(word):
