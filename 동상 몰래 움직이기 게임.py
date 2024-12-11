@@ -47,6 +47,12 @@ class Statue:
     def draw(self, screen):
         screen.blit(self.image, self.rect.topleft)
 
+        # 테두리 출력
+        if self.state == "open":
+            pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  # 빨간 테두리
+        else:
+            pygame.draw.rect(screen, (0, 255, 0), self.rect, 2)  # 초록 테두리
+
 # 플레이어 클래스
 class Player:
     def __init__(self, pos):
@@ -55,6 +61,7 @@ class Player:
         self.speed = 5
         self.is_moving = False
         self.lives = 3  # 라이프 추가
+        self.last_life_loss_time = 0  # 라이프 소진 시간 기록
 
     def update(self, keys):
         self.is_moving = False
@@ -66,7 +73,10 @@ class Player:
         screen.blit(self.image, self.rect.topleft)
 
     def lose_life(self):
-        self.lives -= 1  # 라이프 감소
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_life_loss_time > 1000:  # 1초 딜레이
+            self.lives -= 1
+            self.last_life_loss_time = current_time  # 마지막 라이프 소진 시간 갱신
 
 # 게임 초기화
 def init_game():
@@ -129,6 +139,7 @@ def main():
 
 def show_result(lives, success):
     screen.fill(WHITE)
+    FONT = pygame.font.SysFont(None, 50)
     if lives <= 0:
         result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
     elif success:
@@ -140,3 +151,4 @@ def show_result(lives, success):
 
 if __name__ == "__main__":
     main()
+
