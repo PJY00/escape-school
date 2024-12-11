@@ -74,7 +74,7 @@ class Player:
 
     def lose_life(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_life_loss_time > 500:  # 1초 딜레이
+        if current_time - self.last_life_loss_time > 1000:  # 1초 딜레이
             self.lives -= 1
             self.last_life_loss_time = current_time  # 마지막 라이프 소진 시간 갱신
 
@@ -139,7 +139,7 @@ def main():
 
 def show_result(lives, success):
     screen.fill(WHITE)
-    FONT = pygame.font.SysFont(None, 50)
+      FONT = pygame.font.Font("NEODGM_CODE.TTF", 50)  # 사용자 지정 폰트로 변경
     if lives <= 0:
         result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
     elif success:
@@ -151,3 +151,4 @@ def show_result(lives, success):
 
 if __name__ == "__main__":
     main()
+
