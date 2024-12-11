@@ -1,5 +1,7 @@
 import pygame
 import sys
+from BG_tutorial import run_text
+from F4_main import F4_main
 
 pygame.init()
 
@@ -35,7 +37,8 @@ quit_text_rect = quit_text.get_rect(center=(WIDTH // 2, HEIGHT * 8 // 12))  # �
 # 클릭 이벤트 함수
 def handle_click(pos):
     if start_text_rect.collidepoint(pos):
-        print("Start button clicked!")  # 원하는 작업 실행
+        run_text()
+        F4_main()
     elif load_text_rect.collidepoint(pos):
         print("load button clicked!")  # 원하는 작업 실행
     elif quit_text_rect.collidepoint(pos):
