@@ -89,7 +89,8 @@ def main():
     font_path = 'NEODGM_CODE.TTF'
     font = pygame.font.Font(font_path, 60)
 
-    selected_word = random.choice(words)
+    used_words=[]
+    selected_word = select_new_word(words, used_words)
     scrambled_word = scramble_word(selected_word)
     input_text = ""
     score = 0
