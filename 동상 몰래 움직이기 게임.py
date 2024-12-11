@@ -13,9 +13,6 @@ WHITE = (255, 255, 255)
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
 pygame.display.set_caption("동상 몰래 움직이기")
 
-# 폰트 로드 (시스템 폰트 사용)
-FONT = pygame.font.SysFont('NEODGM_CODE', 50)  # 'NEODGM_CODE'를 시스템 폰트로 로드
-
 # 이미지 로드 및 크기 조정
 background_image = pygame.image.load("Assets/background.png")
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
@@ -77,7 +74,7 @@ class Player:
 
     def lose_life(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_life_loss_time > 1000:  # 1초 딜레이
+        if current_time - self.last_life_loss_time > 500:  # 1초 딜레이
             self.lives -= 1
             self.last_life_loss_time = current_time  # 마지막 라이프 소진 시간 갱신
 
@@ -97,14 +94,6 @@ def draw_lives(screen, lives):
             screen.blit(full_heart, (x, y))  # 남은 라이프
         else:
             screen.blit(empty_heart, (x, y))  # 소진된 라이프
-            
-def init_game():
-    """게임 초기화 함수"""
-    pygame.init()
-    pygame.mixer.init()
-    pygame.display.set_caption("Dice Mini Game")
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    return screen
 
 # 게임 로직
 def main():
@@ -150,11 +139,12 @@ def main():
 
 def show_result(lives, success):
     screen.fill(WHITE)
+    FONT = pygame.font.SysFont(None, 50)
     if lives <= 0:
         result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
     elif success:
         result_text = FONT.render("SUCCESS!", True, (0, 255, 0))
-    screen.blit(result_text, (WIDTH // 2 - 150, HEIGHT // 2 - 25))
+    screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
     pygame.display.flip()
     pygame.time.delay(3000)
     pygame.quit()
