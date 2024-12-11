@@ -62,6 +62,16 @@ def draw_underline(screen, word, font, x, y, input_text):
             screen.blit(char_surface, (char_x,char_y))
         start_x += line_width + spacing
 
+# 새 단어를 선택하는 함수 (중복 방지)
+def select_new_word(words, used_words):
+    remaining_words = list(set(words) - set(used_words))
+    if not remaining_words: 
+        used_words.clear()
+        remaining_words = words
+    selected_word = random.choice(remaining_words)
+    used_words.append(selected_word)
+    return selected_word
+
 #새로운 화면 표시(게임 종료 후)
 def show_end_screen(screen, font):
     screen.fill(white)
