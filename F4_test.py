@@ -3,16 +3,16 @@ import sys
 from F4_story import F4_story 
 from shooter import run_game
 
-# 화면 크기 설정
-WIDTH, HEIGHT = 1200, 700
+def F4_test():
+    # 화면 크기 설정
+    WIDTH, HEIGHT = 1200, 700
 
-# 색상 정의
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
-TRANSPARENT_BLACK = (0, 0, 0, 150)  # 반투명 검정색 (RGBA)
+    # 색상 정의
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    BLUE = (0, 0, 255)
+    TRANSPARENT_BLACK = (0, 0, 0, 150)  # 반투명 검정색 (RGBA)
 
-def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("클릭 후 텍스트 출력")
@@ -83,6 +83,4 @@ def main():
 
     pygame.quit()
     sys.exit()
-
-if __name__ == "__main__":
-    main()
+    
