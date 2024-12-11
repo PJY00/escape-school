@@ -126,6 +126,13 @@ def main():
         screen.fill(white)
         screen.blit(bg, (0, 0))
 
+        # 힌트 텍스트 폰트 크기 설정
+        hint_font = pygame.font.Font(font_path, 10)  # 기존 폰트 크기보다 작게 설정
+
+        # "올바르게 배열하세요 힌트: 과일" 텍스트 표시
+        hint_text = font.render("올바르게 배열하세요 힌트: 과일", True, black)
+        screen.blit(hint_text, (SCREEN_WIDTH // 2 - hint_text.get_width() // 2, 100))
+
         #섞인 단어 표시
         scrambled_text = font.render(scrambled_word, True, white)
         screen.blit(scrambled_text, (SCREEN_WIDTH // 2 - scrambled_text.get_width() // 2, 150))
