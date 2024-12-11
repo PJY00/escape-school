@@ -20,6 +20,9 @@ pygame.display.set_caption("동상 몰래 움직이기")
 FONT = pygame.font.SysFont(None, 50)  # 시스템 기본 폰트, 크기 50
 
 # 이미지 로드 및 크기 조정
+background_image = pygame.image.load("Assets/background.png")  # 배경 이미지 로드
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # 화면 크기에 맞게 조정
+
 statue_image = pygame.image.load("Assets/statue.png")
 statue_image = pygame.transform.scale(statue_image, (110, 220))  # 동상 크기 조정
 
@@ -66,8 +69,8 @@ class Player:
 
 # 게임 초기화
 def init_game():
-    statue = Statue((50, HEIGHT // 2 - 55))
-    player = Player((WIDTH - 100, HEIGHT // 2 - -50))
+    statue = Statue((50, HEIGHT - 220))  # 동상의 발 위치를 화면 바닥에 맞춤
+    player = Player((WIDTH - 200, HEIGHT - 120))  # 플레이어의 발 위치를 동상에 맞춤
     clock = pygame.time.Clock()
     return statue, player, clock
 
@@ -79,7 +82,8 @@ def main():
     success = False
     
     while running:
-        screen.fill(WHITE)
+        # 배경 화면 그리기
+        screen.blit(background_image, (0, 0))
 
         # 이벤트 처리
         keys = pygame.key.get_pressed()
