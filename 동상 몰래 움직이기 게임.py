@@ -8,26 +8,27 @@ pygame.init()
 # 화면 크기와 색상 설정
 WIDTH, HEIGHT = 800, 600
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
 
 # 화면 생성
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
 pygame.display.set_caption("동상 몰래 움직이기")
 
-# 기본 폰트 설정
-FONT = pygame.font.SysFont(None, 50)  # 시스템 기본 폰트, 크기 50
-
 # 이미지 로드 및 크기 조정
-background_image = pygame.image.load("Assets/background.png")  # 배경 이미지 로드
-background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # 화면 크기에 맞게 조정
+background_image = pygame.image.load("Assets/background.png")
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 
 statue_image = pygame.image.load("Assets/statue.png")
-statue_image = pygame.transform.scale(statue_image, (110, 220))  # 동상 크기 조정
+statue_image = pygame.transform.scale(statue_image, (110, 220))
 
 player_image = pygame.image.load("Assets/player.png")
-player_image = pygame.transform.scale(player_image, (100, 120))  # 플레이어 크기 조정
+player_image = pygame.transform.scale(player_image, (100, 120))
+
+# 하트 이미지 로드 및 크기 조정
+full_heart = pygame.image.load("Assets/full_heart.png")
+full_heart = pygame.transform.scale(full_heart, (50, 50))
+
+empty_heart = pygame.image.load("Assets/empty_heart.png")
+empty_heart = pygame.transform.scale(empty_heart, (50, 50))
 
 # 동상 클래스
 class Statue:
@@ -45,10 +46,6 @@ class Statue:
 
     def draw(self, screen):
         screen.blit(self.image, self.rect.topleft)
-        if self.state == "open":
-            pygame.draw.rect(screen, RED, self.rect, 2)
-        else:
-            pygame.draw.rect(screen, GREEN, self.rect, 2)
 
 # 플레이어 클래스
 class Player:
@@ -57,6 +54,7 @@ class Player:
         self.rect = self.image.get_rect(topleft=pos)
         self.speed = 5
         self.is_moving = False
+        self.lives = 3  # 라이프 추가
 
     def update(self, keys):
         self.is_moving = False
@@ -67,22 +65,33 @@ class Player:
     def draw(self, screen):
         screen.blit(self.image, self.rect.topleft)
 
+    def lose_life(self):
+        self.lives -= 1  # 라이프 감소
+
 # 게임 초기화
 def init_game():
-    statue = Statue((50, HEIGHT - 220))  # 동상의 발 위치를 화면 바닥에 맞춤
-    player = Player((WIDTH - 200, HEIGHT - 120))  # 플레이어의 발 위치를 동상에 맞춤
+    statue = Statue((50, HEIGHT - 220))
+    player = Player((WIDTH - 200, HEIGHT - 120))
     clock = pygame.time.Clock()
     return statue, player, clock
+
+# 라이프 그리기 함수
+def draw_lives(screen, lives):
+    for i in range(3):  # 최대 3개의 하트 표시
+        x = 10 + i * 60  # 하트 간격
+        y = 10
+        if i < lives:
+            screen.blit(full_heart, (x, y))  # 남은 라이프
+        else:
+            screen.blit(empty_heart, (x, y))  # 소진된 라이프
 
 # 게임 로직
 def main():
     statue, player, clock = init_game()
     running = True
-    game_over = False
     success = False
     
     while running:
-        # 배경 화면 그리기
         screen.blit(background_image, (0, 0))
 
         # 이벤트 처리
@@ -99,8 +108,9 @@ def main():
 
         # 충돌 감지
         if statue.state == "open" and player.is_moving:
-            game_over = True
-            running = False
+            player.lose_life()  # 라이프 감소
+            if player.lives <= 0:
+                running = False
 
         if player.rect.colliderect(statue.rect):
             success = True
@@ -109,26 +119,24 @@ def main():
         # 그리기
         statue.draw(screen)
         player.draw(screen)
+        draw_lives(screen, player.lives)  # 라이프 그리기
 
         pygame.display.flip()
         clock.tick(30)
 
     # 결과 화면
-    show_result(game_over, success)
+    show_result(player.lives, success)
 
-def show_result(game_over, success):
+def show_result(lives, success):
     screen.fill(WHITE)
-    if game_over:
-        result_text = FONT.render("GAME OVER!", True, RED)
+    if lives <= 0:
+        result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
     elif success:
-        result_text = FONT.render("SUCCESS!", True, GREEN)
-    # 결과 텍스트 화면에 출력
+        result_text = FONT.render("SUCCESS!", True, (0, 255, 0))
     screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
     pygame.display.flip()
     pygame.time.delay(3000)
-
     pygame.quit()
 
 if __name__ == "__main__":
     main()
-
