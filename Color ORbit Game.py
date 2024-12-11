@@ -105,11 +105,13 @@ def run_game():
 
         title_text = font_title.render("Orbit Game Instructions", True, WHITE)
         instructions = [
-            "1. Use SPACE to change the star's color.",
+            "1. Use SPACE_BAR to change the star's color.",
             "2. Match the star's color to the orb's color to score points.",
             "3. Avoid orbs with mismatched colors - it's Game Over!",
-            "4. At 10 and 20 points, the star's rotation direction changes.",
-            "Press SPACE to start the game!",
+            "4. At 10 and 20 points, the star's rotation direction",
+            "    changes.",
+            "",
+            "Press SPACE_BAR to start the game!",
         ]
 
         screen.fill(BLACK)
@@ -140,79 +142,72 @@ def run_game():
             pygame.time.delay(1000)
 
     # Main Game Loop
-    def main():
-        pygame.init()
-        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Orbit Game")
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Orbit Game")
 
-        show_instructions(screen)  # Show instructions before starting the game
-        show_countdown(screen)  # Show countdown before the game starts
+    show_instructions(screen)  # Show instructions before starting the game
+    show_countdown(screen)  # Show countdown before the game starts
 
-        star = Star()
-        orbs = create_orbs(2, star.position)
-        clock = pygame.time.Clock()
-        score = 0
-        star_speed = 2
-        direction_changed = False
+    star = Star()
+    orbs = create_orbs(2, star.position)
+    clock = pygame.time.Clock()
+    score = 0
+    star_speed = 2
 
-        while True:
-            screen.fill(BLACK)
+    while True:
+        screen.fill(BLACK)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        star.change_color()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    star.change_color()
 
-            # Update star position
-            star.angle = (star.angle + star_speed) % 360
-            star.update_position()
+        # Update star position
+        star.angle = (star.angle + star_speed) % 360
+        star.update_position()
 
-            # Change direction based on score
-            if score == 10 and not direction_changed:
-                star_speed = -star_speed
-                direction_changed = True
-            if score == 20 and direction_changed:
-                star_speed = -star_speed
-                direction_changed = False
+        # Change direction based on score
+        if score == 10:
+            star_speed = -star_speed
+        if score == 20:
+            star_speed = -star_speed
 
-            # Draw planet and orbit
-            pygame.draw.circle(screen, PLANET_COLOR, PLANET_CENTER, 140)
-            pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
+        # Draw planet and orbit
+        pygame.draw.circle(screen, PLANET_COLOR, PLANET_CENTER, 140)
+        pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
 
-            # Draw and process orbs
-            for orb in orbs[:]:
-                orb.draw(screen)
-                distance = math.hypot(orb.position[0] - star.position[0], orb.position[1] - star.position[1])
-                if distance < orb.radius + star.radius:
-                    if orb.color == star.color:
-                        score += 1
-                        orbs.remove(orb)
-                    else:
-                        game_over(screen, score)
+        # Draw and process orbs
+        for orb in orbs[:]:
+            orb.draw(screen)
+            distance = math.hypot(orb.position[0] - star.position[0], orb.position[1] - star.position[1])
+            if distance < orb.radius + star.radius:
+                if orb.color == star.color:
+                    score += 1
+                    orbs.remove(orb)
+                else:
+                    game_over(screen, score)
 
-            # Check for success
-            if score >= 25:
-                success(screen)
+        # Check for success
+        if score >= 25:
+            success(screen)
 
-            # Generate new orbs if needed
-            if len(orbs) == 0:
-                orbs = create_orbs(random.randint(2, 3), star.position)
+        # Generate new orbs if needed
+        if len(orbs) == 0:
+            orbs = create_orbs(random.randint(2, 3), star.position)
 
-            # Draw star
-            star.draw(screen)
+        # Draw star
+        star.draw(screen)
 
-            # Display score
-            font = pygame.font.Font(None, 36)
-            score_text = font.render(f"Score: {score}", True, WHITE)
-            screen.blit(score_text, (10, 10))
+        # Display score
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, WHITE)
+        screen.blit(score_text, (10, 10))
 
-            pygame.display.flip()
-            clock.tick(30)
-
-    if __name__ == "__main__":
-        main()
+        pygame.display.flip()
+        clock.tick(30)
 
 run_game()
