@@ -8,26 +8,34 @@ pygame.init()
 # 화면 크기와 색상 설정
 WIDTH, HEIGHT = 800, 600
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
 
 # 화면 생성
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
 pygame.display.set_caption("동상 몰래 움직이기")
 
-# 기본 폰트 설정
-FONT = pygame.font.SysFont(None, 50)  # 시스템 기본 폰트, 크기 50
+# 이미지 로드 및 크기 조정
+background_image = pygame.image.load("Assets/background.png")
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 
-# 이미지 로드
 statue_image = pygame.image.load("Assets/statue.png")
+statue_image = pygame.transform.scale(statue_image, (110, 220))
+
 player_image = pygame.image.load("Assets/player.png")
+player_image = pygame.transform.scale(player_image, (100, 120))
+
+# 하트 이미지 로드 및 크기 조정
+full_heart = pygame.image.load("Assets/full_heart.png")
+full_heart = pygame.transform.scale(full_heart, (50, 50))
+
+empty_heart = pygame.image.load("Assets/empty_heart.png")
+empty_heart = pygame.transform.scale(empty_heart, (50, 50))
 
 # 동상 클래스
 class Statue:
     def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1], 50, 100)
-        self.state = "closed"  # 초기 상태: 눈 감음
+        self.image = statue_image
+        self.rect = self.image.get_rect(topleft=pos)
+        self.state = "closed"
         self.last_switch_time = pygame.time.get_ticks()
 
     def update(self):
@@ -37,46 +45,64 @@ class Statue:
             self.last_switch_time = pygame.time.get_ticks()
 
     def draw(self, screen):
-        # 상태에 따라 이미지 출력
+        screen.blit(self.image, self.rect.topleft)
+
+        # 테두리 출력
         if self.state == "open":
-            pygame.draw.rect(screen, RED, self.rect, 2)  # 테두리 추가
+            pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  # 빨간 테두리
         else:
-            pygame.draw.rect(screen, GREEN, self.rect, 2)
-        screen.blit(statue_image, self.rect.topleft)
+            pygame.draw.rect(screen, (0, 255, 0), self.rect, 2)  # 초록 테두리
 
 # 플레이어 클래스
 class Player:
     def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1], 50, 50)
+        self.image = player_image
+        self.rect = self.image.get_rect(topleft=pos)
         self.speed = 5
         self.is_moving = False
+        self.lives = 3  # 라이프 추가
+        self.last_life_loss_time = 0  # 라이프 소진 시간 기록
 
     def update(self, keys):
-        # 플레이어 이동
         self.is_moving = False
         if keys[K_LEFT]:
             self.rect.x -= self.speed
             self.is_moving = True
 
     def draw(self, screen):
-        screen.blit(player_image, self.rect.topleft)
+        screen.blit(self.image, self.rect.topleft)
+
+    def lose_life(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_life_loss_time > 1000:  # 1초 딜레이
+            self.lives -= 1
+            self.last_life_loss_time = current_time  # 마지막 라이프 소진 시간 갱신
 
 # 게임 초기화
 def init_game():
-    statue = Statue((50, HEIGHT // 2 - 50))
-    player = Player((WIDTH - 100, HEIGHT // 2 - 25))
+    statue = Statue((50, HEIGHT - 220))
+    player = Player((WIDTH - 200, HEIGHT - 120))
     clock = pygame.time.Clock()
     return statue, player, clock
+
+# 라이프 그리기 함수
+def draw_lives(screen, lives):
+    for i in range(3):  # 최대 3개의 하트 표시
+        x = 10 + i * 60  # 하트 간격
+        y = 10
+        if i < lives:
+            screen.blit(full_heart, (x, y))  # 남은 라이프
+        else:
+            screen.blit(empty_heart, (x, y))  # 소진된 라이프
 
 # 게임 로직
 def main():
     statue, player, clock = init_game()
     running = True
-    game_over = False
     success = False
     
     while running:
-        screen.fill(WHITE)
+        screen.blit(background_image, (0, 0))
 
         # 이벤트 처리
         keys = pygame.key.get_pressed()
@@ -92,8 +118,9 @@ def main():
 
         # 충돌 감지
         if statue.state == "open" and player.is_moving:
-            game_over = True
-            running = False
+            player.lose_life()  # 라이프 감소
+            if player.lives <= 0:
+                running = False
 
         if player.rect.colliderect(statue.rect):
             success = True
@@ -102,25 +129,26 @@ def main():
         # 그리기
         statue.draw(screen)
         player.draw(screen)
+        draw_lives(screen, player.lives)  # 라이프 그리기
 
         pygame.display.flip()
         clock.tick(30)
 
     # 결과 화면
-    show_result(game_over, success)
+    show_result(player.lives, success)
 
-def show_result(game_over, success):
+def show_result(lives, success):
     screen.fill(WHITE)
-    if game_over:
-        result_text = FONT.render("GAME OVER!", True, RED)
+    FONT = pygame.font.SysFont(None, 50)
+    if lives <= 0:
+        result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
     elif success:
-        result_text = FONT.render("SUCCESS!", True, GREEN)
-    # 결과 텍스트 화면에 출력
+        result_text = FONT.render("SUCCESS!", True, (0, 255, 0))
     screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
     pygame.display.flip()
     pygame.time.delay(3000)
-
     pygame.quit()
 
 if __name__ == "__main__":
     main()
+

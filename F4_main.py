@@ -1,4 +1,4 @@
-from F4_story import F4_story
+from F4_test import F4_test
 
-if __name__ == "__main__":
-    F4_story()
+def F4_main():
+    F4_test()
