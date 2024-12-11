@@ -139,7 +139,8 @@ def main():
 
 def show_result(lives, success):
     screen.fill(WHITE)
-    FONT = pygame.font.SysFont(None, 50)
+    FONT = pygame.font.Font("NEODGM_CODE.TTF", 50)  # 폰트 변경
+   
     if lives <= 0:
         result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
     elif success:
@@ -151,4 +152,3 @@ def show_result(lives, success):
 
 if __name__ == "__main__":
     main()
-

@@ -76,7 +76,10 @@ def run_game():
         return orbs
 
     def success(screen):
-        font = pygame.font.Font(None, 72)
+        try:
+            font = pygame.font.Font("NEODGM_CODE.TTF", 72)
+        except FileNotFoundError:
+            font = pygame.font.SysFont("arial", 72)
         text = font.render("Success!", True, WHITE)
         screen.fill(BLACK)
         screen.blit(text, (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 50))
@@ -86,9 +89,12 @@ def run_game():
         sys.exit()
 
     def game_over(screen, score):
-        font = pygame.font.Font(None, 72)
+        try:
+            font = pygame.font.Font("NEODGM_CODE.TTF", 72)
+        except FileNotFoundError:
+            font = pygame.font.SysFont("arial", 72)
         text = font.render("Game Over", True, WHITE)
-        score_text = pygame.font.Font(None, 48).render(f"Score: {score}", True, WHITE)
+        score_text = pygame.font.Font("NEODGM_CODE.TTF", 48).render(f"Score: {score}", True, WHITE)
 
         screen.fill(BLACK)
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - 50))
@@ -100,16 +106,23 @@ def run_game():
         sys.exit()
 
     def show_instructions(screen):
-        font_title = pygame.font.Font(None, 48)
-        font_text = pygame.font.Font(None, 28)
+        try:
+            font_title = pygame.font.Font("NEODGM_CODE.TTF", 48)
+            font_text = pygame.font.Font("NEODGM_CODE.TTF", 28)
+        except FileNotFoundError:
+            font_title = pygame.font.SysFont("arial", 48)
+            font_text = pygame.font.SysFont("arial", 28)
 
         title_text = font_title.render("Orbit Game Instructions", True, WHITE)
         instructions = [
-            "1. Use SPACE_BAR to change the star's color.",
-            "2. Match the star's color to the orb's color to score points.",
-            "3. Avoid orbs with mismatched colors - it's Game Over!",
-            "4. At 10 and 20 points, the star's rotation direction",
-            "    changes.",
+            "1. Use SPACE_BAR to change the star's",
+            "    color.",
+            "2. Match the star's color to the orb's",
+            "    color to score points.",
+            "3. Avoid orbs with mismatched colors",
+            "    - it's Game Over!",
+            "4. At 10 and 20 points, the star's",
+            "    rotation direction changes.",
             "",
             "Press SPACE_BAR to start the game!",
         ]
@@ -133,7 +146,10 @@ def run_game():
                         waiting = False
 
     def show_countdown(screen):
-        font = pygame.font.Font(None, 72)
+        try:
+            font = pygame.font.Font("NEODGM_CODE.TTF", 72)
+        except FileNotFoundError:
+            font = pygame.font.SysFont("arial", 72)
         for i in range(3, 0, -1):
             screen.fill(BLACK)
             countdown_text = font.render(str(i), True, WHITE)
@@ -156,7 +172,7 @@ def run_game():
     star_speed = 2
 
     while True:
-        screen.fill(BLACK)
+        screen.fill(BLACK) 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -203,7 +219,10 @@ def run_game():
         star.draw(screen)
 
         # Display score
-        font = pygame.font.Font(None, 36)
+        try:
+            font = pygame.font.Font("NEODGM_CODE.TTF", 36)
+        except FileNotFoundError:
+            font = pygame.font.SysFont("arial", 36)
         score_text = font.render(f"Score: {score}", True, WHITE)
         screen.blit(score_text, (10, 10))
 
