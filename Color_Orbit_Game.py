@@ -3,7 +3,7 @@ import sys
 import random
 import math
 
-def run_game():
+def run_orbit():
     # Constants
     SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
     PLANET_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
@@ -239,5 +239,5 @@ def run_game():
         clock.tick(30)
 
 # Run the game and return result
-result = run_game()
+result = run_orbit()
 print(result)

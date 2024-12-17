@@ -1,10 +1,10 @@
 import pygame
 import sys
 from F1_story import F1_story 
-from Color_Orbit_Game import run_game
+from Color_Orbit_Game import run_orbit
 from bad_end import bad_end
 
-def F4_test():
+def F1_test():
     # 화면 크기 설정
     WIDTH, HEIGHT = 1200, 700
 
@@ -76,7 +76,7 @@ def F4_test():
         clock.tick(60)
         
     # 텍스트 완료 후 다른 모듈 실행
-    result = run_game()
+    result = run_orbit()
     pygame.time.delay(100)
     
     if result == 1:
