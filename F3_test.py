@@ -61,9 +61,6 @@ def F3_test():
         run_dice()
         F3_2_story()
         pygame.time.delay(100)
-    
-    pygame.quit()
-    sys.exit()
 
 def handle_event(screen, clock, font, button_rect, texts):
     current_text_index = 0  # 현재 표시할 텍스트 인덱스
