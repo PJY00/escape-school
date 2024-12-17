@@ -96,7 +96,7 @@ def draw_lives(screen, lives):
             screen.blit(empty_heart, (x, y))  # 소진된 라이프
 
 # 게임 로직
-def main():
+def run_game():
     statue, player, clock = init_game()
     running = True
     success = False
@@ -149,6 +149,3 @@ def show_result(lives, success):
     pygame.display.flip()
     pygame.time.delay(3000)
     pygame.quit()
-
-if __name__ == "__main__":
-    main()

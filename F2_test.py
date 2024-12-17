@@ -1,7 +1,7 @@
 import pygame
 import sys
 from F4_story import F4_story 
-from shooter import run_game
+from statue_moving import run_game
 from bad_end import bad_end
 
 def F2_test():
