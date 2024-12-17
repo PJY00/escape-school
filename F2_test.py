@@ -96,14 +96,14 @@ def F2_test():
         clock.tick(60)
         
     # 텍스트 완료 후 다른 모듈 실행
-    result = run_game()
+    result_sta = run_game()
     pygame.time.delay(100)
     
-    if result == 1:
+    if result_sta == 1:
         print("게임에서 승리했습니다!")
         # 승리 이벤트 실행
         F2_story()
-    elif result == -1:
+    elif result_sta == -1:
         # 배드엔딩
         bad_end()
     else:

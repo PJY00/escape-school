@@ -1,6 +1,10 @@
 import pygame
 import sys
 from F4_main import F4_main
+from F3_main import F3_main
+from F2_main import F2_main
+from F1_main import F1_main
+from BG_elv import elv_game
 
 def run_load():
     pygame.init()
@@ -40,15 +44,24 @@ def run_load():
     def handle_click(pos):
         if F4_load_rect.collidepoint(pos):
             F4_main()
+            elv_game()
+            F3_main()
+            elv_game()
+            F2_main()
+            elv_game()
+            F1_main()
         elif F3_load_rect.collidepoint(pos):
-            #F3_main()
-            print("1")
+            F3_main()
+            elv_game()
+            F2_main()
+            elv_game()
+            F1_main()
         elif F2_load_rect.collidepoint(pos):
-            #F2_main()
-            print("1")
+            F2_main()
+            elv_game()
+            F1_main()
         elif F1_load_rect.collidepoint(pos):
-            #F1_main()
-            print("1")
+            F1_main()
 
     # 화면 업데이트 루프
     running = True
