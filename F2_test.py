@@ -4,7 +4,7 @@ from F4_story import F4_story
 from shooter import run_game
 from bad_end import bad_end
 
-def F4_test():
+def F2_test():
     # 화면 크기 설정
     WIDTH, HEIGHT = 1200, 700
 
