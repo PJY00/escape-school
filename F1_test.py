@@ -115,7 +115,4 @@ def F1_test():
     else:
         print("알 수 없는 결과입니다.")
         # 기본 이벤트 실행
-
-    pygame.quit()
-    sys.exit()
     
