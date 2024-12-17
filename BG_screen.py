@@ -7,6 +7,7 @@ from F2_main import F2_main
 from F1_main import F1_main
 from BG_elv import elv_game
 from BG_saveload import run_load
+from BG_pass import password_input_game
 
 pygame.init()
 
@@ -73,6 +74,7 @@ def handle_click(pos):
         F2_main()
         elv_game()
         F1_main()
+        password_input_game()
     elif load_text_rect.collidepoint(pos):
         run_load()  
     elif quit_text_rect.collidepoint(pos):
