@@ -50,9 +50,7 @@ def F2_test():
 
     # 버튼 렌더링 (이미지 사용)
     screen.blit(button_image, button_rect.topleft)
-    # 사각형 버튼 정의
-    button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 400, 400)
-
+    
     # 텍스트 상태 변수
     texts = [
         "게임을 시작합니다.",
