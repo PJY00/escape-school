@@ -86,6 +86,7 @@ def run_game():
         pygame.time.delay(2000)
         pygame.quit()
         sys.exit()
+        return 1  # Success return
 
     def game_over(screen, score, lives):
         try:
@@ -103,6 +104,9 @@ def run_game():
 
         pygame.display.flip()
         pygame.time.delay(2000)
+        pygame.quit()
+        sys.exit()  # Ensure that the game quits after showing "Game Over"
+        return -1  # Game over return
 
     def show_instructions(screen):
         try:
@@ -162,4 +166,78 @@ def run_game():
 
     star = Star()
     orbs = create_orbs(2, star.position)
-    clock = pygame.time.C
+    clock = pygame.time.Clock()
+    score = 0
+    lives = 3  # Set initial lives to 3
+    star_speed = 2
+
+    # 플래그 변수
+    direction_changed_10 = False
+    direction_changed_20 = False
+
+    while True:
+        screen.fill(BLACK) 
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    star.change_color()
+
+        # Update star position
+        star.angle = (star.angle + star_speed) % 360
+        star.update_position()
+
+        # Change direction based on score
+        if score >= 10 and not direction_changed_10:
+            star_speed = -star_speed
+            direction_changed_10 = True
+
+        if score >= 20 and not direction_changed_20:
+            star_speed = -star_speed
+            direction_changed_20 = True
+
+        # Draw planet and orbit
+        pygame.draw.circle(screen, PLANET_COLOR, PLANET_CENTER, 140)
+        pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
+
+        # Draw and process orbs
+        for orb in orbs[:]:
+            orb.draw(screen)
+            distance = math.hypot(orb.position[0] - star.position[0], orb.position[1] - star.position[1])
+            if distance < orb.radius + star.radius:
+                if orb.color == star.color:
+                    score += 1
+                    orbs.remove(orb)
+                else:
+                    lives -= 1  # Decrease life if the orb color does not match
+                    orbs.remove(orb)
+                    if lives == 0:
+                        return game_over(screen, score, lives)  # Game over if no lives are left
+
+        # Check for success
+        if score >= 25:
+            return success(screen)  # Success return
+
+        # Generate new orbs if needed
+        if len(orbs) == 0:
+            orbs = create_orbs(random.randint(2, 3), star.position)
+
+        # Draw star
+        star.draw(screen)
+
+        # Display score and lives
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, WHITE)
+        lives_text = font.render(f"Lives: {lives}", True, WHITE)
+        screen.blit(score_text, (10, 10))
+        screen.blit(lives_text, (10, 50))
+
+        pygame.display.flip()
+        clock.tick(30)
+
+# Run the game and return result
+result = run_game()
+print(result)
