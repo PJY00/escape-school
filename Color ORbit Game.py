@@ -6,7 +6,7 @@ import time
 
 def run_game():
     # Constants
-    SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
+    SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
     PLANET_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     ORBIT_RADIUS = 250
     COLORS = [(255, 0, 0), (0, 0, 255), (255, 255, 0)]  # Red, Blue, Yellow
