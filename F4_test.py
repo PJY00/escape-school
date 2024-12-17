@@ -1,7 +1,7 @@
 import pygame
 import sys
 from F4_story import F4_story 
-from shooter import run_game
+from shooter import run_shooter
 from bad_end import bad_end
 
 def F4_test():
@@ -96,7 +96,7 @@ def F4_test():
         clock.tick(60)
         
     # 텍스트 완료 후 다른 모듈 실행
-    result = run_game()
+    result = run_shooter()
     pygame.time.delay(100)
     
     if result == 1:
