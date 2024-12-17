@@ -46,11 +46,23 @@ def load_resources():
         print(f"Error loading background image: {e}")
         sys.exit()
 
+# 사진 이미지 로드 함수
+def load_photo_image():
+    try:
+        photo_image = pygame.image.load("NPCpixel.png")  # 이미지 파일 경로 (변경 필요)
+        photo_image = pygame.transform.scale(photo_image, (200, 200))  # 이미지 크기 키우기
+        return photo_image
+    except pygame.error as e:
+        print(f"Error loading photo image: {e}")
+        sys.exit()
+
 # 배경 이미지 로드
 background = load_resources()
+photo_image = load_photo_image()
 
 # 클릭 이벤트 함수
 def handle_click(pos):
+    # 텍스트 클릭
     if start_text_rect.collidepoint(pos):
         run_text()
         F4_main()
@@ -66,6 +78,12 @@ def handle_click(pos):
         print("Quit button clicked!")  
         pygame.quit()
         sys.exit()
+    # 사진 클릭 (사진의 위치를 클릭했을 때)
+    photo_rect = photo_image.get_rect(topleft=(50, HEIGHT // 3))  # 왼쪽 위치 설정
+    if photo_rect.collidepoint(pos):
+        print("Photo clicked!")  # 사진 클릭 시 게임 시작
+        run_text()
+        F4_main()
 
 # 화면 업데이트 루프
 running = True
@@ -91,6 +109,9 @@ while running:
     screen.blit(start_text, start_text_rect)
     screen.blit(load_text, load_text_rect)
     screen.blit(quit_text, quit_text_rect)
+
+    # 사진 이미지 화면에 그리기 (왼쪽으로 이동)
+    screen.blit(photo_image, (50, HEIGHT // 3))  # 왼쪽으로 50px 이동
 
     # 화면 업데이트
     pygame.display.flip()
