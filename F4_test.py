@@ -2,6 +2,7 @@ import pygame
 import sys
 from F4_story import F4_story 
 from shooter import run_game
+from bad_end import bad_end
 
 def F4_test():
     # 화면 크기 설정
@@ -85,6 +86,7 @@ def F4_test():
         # 승리 이벤트 실행
         F4_story()
     elif result == -1:
+        bad_end()
         print("게임에서 패배했습니다.")
         # 패배 이벤트 실행
         F4_story()
