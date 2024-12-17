@@ -1,7 +1,7 @@
 import pygame
 import random
 
-def run_game():
+def run_shooter():
     # 화면 크기 설정
     WIDTH = 1200
     HEIGHT = 700
