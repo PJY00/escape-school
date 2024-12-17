@@ -1,5 +1,7 @@
 import pygame
 import sys
+from F3_1_story import F3_1_story 
+from Scramble_english import run_game
 
 def F3_test():
     # 화면 크기 설정
