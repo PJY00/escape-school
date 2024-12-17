@@ -1,8 +1,9 @@
 import pygame
 import random
 import sys
+from bad_end import bad_end
 
-def start_game():
+def elv_game():
     # 초기화
     pygame.init()
     
@@ -40,8 +41,9 @@ def start_game():
     
     # 첫 문제 생성
     problem, correct_answer = generate_problem()
+    running = True
 
-    while True:
+    while running:
         screen.fill(BLACK)  # 화면 초기화
 
         # 문제와 사용자 입력 표시
@@ -65,10 +67,10 @@ def start_game():
                     if user_input.isdigit() or (user_input.startswith("-") and user_input[1:].isdigit()):
                         if int(user_input) == correct_answer:
                             result_message, result_color = "정답입니다!", GREEN
-                            print(1)
+                            running = False
                         else:
                             result_message, result_color = "틀렸습니다!", RED
-                            print(-1)
+                            bad_end()
                         user_input = ""
                         problem, correct_answer = generate_problem()
                     else:
@@ -79,6 +81,3 @@ def start_game():
                     user_input += event.unicode
 
         clock.tick(30)
-
-if __name__ == "__main__":
-    start_game()
