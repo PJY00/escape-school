@@ -33,7 +33,7 @@ def F3_test():
     # 배경 이미지 불러오기
     def load_background_image():
         try:
-            background = pygame.image.load("class1.png")  # 배경 이미지 파일 경로 설정
+            background = pygame.image.load("class2.png")  # 배경 이미지 파일 경로 설정
             background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # 화면 크기에 맞게 조정
             return background
         except pygame.error as e:
