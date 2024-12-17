@@ -40,6 +40,14 @@ def F1_test():
 
     # 배경 이미지 로드
     background = load_background_image()
+    # 화면 렌더링
+    screen.fill(WHITE)
+
+    # 배경 그리기
+    screen.blit(background, (0, 0))  # 배경 이미지 그리기
+
+    # 버튼 렌더링 (이미지 사용)
+    screen.blit(button_image, button_rect.topleft)
 
     # 사각형 버튼 정의
     button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 400, 400)

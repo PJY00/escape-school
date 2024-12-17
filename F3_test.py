@@ -36,6 +36,14 @@ def F3_test():
 
     # 배경 이미지 로드
     background = load_background_image()
+    # 화면 렌더링
+    screen.fill(WHITE)
+
+    # 배경 그리기
+    screen.blit(background, (0, 0))  # 배경 이미지 그리기
+
+    # 버튼 렌더링 (이미지 사용)
+    screen.blit(button_image, button_rect.topleft)
     # 폰트 설정
     font_path = 'NEODGM_CODE.TTF'
     font = pygame.font.Font(font_path, 20)
