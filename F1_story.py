@@ -8,7 +8,7 @@ WIDTH, HEIGHT = 1200, 700
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-def F4_story():
+def F1_story():
     # Pygame 초기화
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))  # 게임 화면 크기 설정
