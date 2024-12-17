@@ -2,6 +2,11 @@ import pygame
 import sys
 from BG_tutorial import run_text
 from F4_main import F4_main
+from F3_main import F3_main
+from F2_main import F2_main
+from F1_main import F1_main
+from BG_elv import elv_game
+from BG_saveload import run_load
 
 pygame.init()
 
@@ -49,8 +54,14 @@ def handle_click(pos):
     if start_text_rect.collidepoint(pos):
         run_text()
         F4_main()
+        elv_game()
+        F3_main()
+        elv_game()
+        F2_main()
+        elv_game()
+        F1_main()
     elif load_text_rect.collidepoint(pos):
-        print("Load button clicked!")  
+        run_load()  
     elif quit_text_rect.collidepoint(pos):
         print("Quit button clicked!")  
         pygame.quit()
