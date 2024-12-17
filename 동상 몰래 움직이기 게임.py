@@ -6,7 +6,7 @@ from pygame.locals import *
 pygame.init()
 
 # 화면 크기와 색상 설정
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 700
 WHITE = (255, 255, 255)
 
 # 화면 생성
