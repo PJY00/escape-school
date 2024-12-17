@@ -1,7 +1,9 @@
 import pygame
 import sys
 from F3_1_story import F3_1_story 
-from Scramble_english import run_game
+from F3_2_story import F3_2_story
+from scramble_english import run_game
+from Rolling_Dice_Mini_Game import run_dice
 
 def F3_test():
     # 화면 크기 설정
@@ -37,14 +39,8 @@ def F3_test():
             print("알 수 없는 결과입니다.")
 
     if handle_event(screen, clock, font, button_rect, ["두 번째 이벤트를 시작합니다.", "도전하세요!"]):
-        result = run_game()
+        run_dice()
         pygame.time.delay(100)
-        
-        if result == 1:
-            print("두 번째 게임에서 승리했습니다!")
-            F3_2_story()
-        else:
-            print("알 수 없는 결과입니다.")
     
     pygame.quit()
     sys.exit()

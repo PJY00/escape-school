@@ -1,8 +1,6 @@
 import pygame
 import random
 from pygame.locals import *
-import os
-import matplotlib.pyplot as plt
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
 DICE_SIZE = (150, 150)
@@ -68,7 +66,7 @@ def set_text(screen, text, y_offset, color=WHITE, font_size=30):
     text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
     screen.blit(text_surface, text_rect)
 
-def main():
+def run_dice():
     """메인 함수"""
     screen = init_game()
     pygame.mixer.init()
@@ -117,6 +115,3 @@ def main():
         clock.tick(60)
 
     pygame.quit()
-
-if __name__ == "__main__":
-    main()
