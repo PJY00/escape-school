@@ -1,152 +1,121 @@
 import pygame
 import random
 from pygame.locals import *
+import os
+import matplotlib.pyplot as plt
 
-# 초기화
-pygame.init()
-
-# 화면 크기와 색상 설정
-WIDTH, HEIGHT = 800, 600
+SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
+DICE_SIZE = (150, 150)
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (200, 200, 200)
 
-# 화면 생성
-screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE | DOUBLEBUF)
-pygame.display.set_caption("동상 몰래 움직이기")
-
-# 이미지 로드 및 크기 조정
-background_image = pygame.image.load("Assets/background.png")
-background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
-
-statue_image = pygame.image.load("Assets/statue.png")
-statue_image = pygame.transform.scale(statue_image, (110, 220))
-
-player_image = pygame.image.load("Assets/player.png")
-player_image = pygame.transform.scale(player_image, (100, 120))
-
-# 하트 이미지 로드 및 크기 조정
-full_heart = pygame.image.load("Assets/full_heart.png")
-full_heart = pygame.transform.scale(full_heart, (50, 50))
-
-empty_heart = pygame.image.load("Assets/empty_heart.png")
-empty_heart = pygame.transform.scale(empty_heart, (50, 50))
-
-# 동상 클래스
-class Statue:
-    def __init__(self, pos):
-        self.image = statue_image
-        self.rect = self.image.get_rect(topleft=pos)
-        self.state = "closed"
-        self.last_switch_time = pygame.time.get_ticks()
-
-    def update(self):
-        # 랜덤 상태 변경 (2초마다)
-        if pygame.time.get_ticks() - self.last_switch_time > 2000:
-            self.state = random.choice(["open", "closed"])
-            self.last_switch_time = pygame.time.get_ticks()
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
-
-        # 테두리 출력
-        if self.state == "open":
-            pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  # 빨간 테두리
-        else:
-            pygame.draw.rect(screen, (0, 255, 0), self.rect, 2)  # 초록 테두리
-
-# 플레이어 클래스
-class Player:
-    def __init__(self, pos):
-        self.image = player_image
-        self.rect = self.image.get_rect(topleft=pos)
-        self.speed = 5
-        self.is_moving = False
-        self.lives = 3  # 라이프 추가
-        self.last_life_loss_time = 0  # 라이프 소진 시간 기록
-
-    def update(self, keys):
-        self.is_moving = False
-        if keys[K_LEFT]:
-            self.rect.x -= self.speed
-            self.is_moving = True
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
-
-    def lose_life(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_life_loss_time > 500:  # 0.5초 딜레이
-            self.lives -= 1
-            self.last_life_loss_time = current_time  # 마지막 라이프 소진 시간 갱신
-
-# 게임 초기화
 def init_game():
-    statue = Statue((50, HEIGHT - 220))
-    player = Player((WIDTH - 200, HEIGHT - 120))
-    clock = pygame.time.Clock()
-    return statue, player, clock
+    """게임 초기화 함수"""
+    pygame.init()
+    pygame.mixer.init()
+    pygame.display.set_caption("Dice Mini Game")
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    return screen
 
-# 라이프 그리기 함수
-def draw_lives(screen, lives):
-    for i in range(3):  # 최대 3개의 하트 표시
-        x = 10 + i * 60  # 하트 간격
-        y = 10
-        if i < lives:
-            screen.blit(full_heart, (x, y))  # 남은 라이프
-        else:
-            screen.blit(empty_heart, (x, y))  # 소진된 라이프
+def load_resources():
+    """리소스 로드 함수"""
+    try:
+        dice_images = [pygame.image.load(f"diceImage/dice_{i}.png") for i in range(1, 7)]
+        dice_images = [pygame.transform.scale(img, DICE_SIZE) for img in dice_images]
+        bg = pygame.image.load("diceImage/bg.png")
+        bg=pygame.transform.scale(bg,(SCREEN_WIDTH,SCREEN_HEIGHT))
 
-# 게임 로직
+        roll_sound=pygame.mixer.Sound("sounds/dice_roll.wav")
+
+        print()
+        print(len(dice_images))
+        print()
+
+        bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    except FileNotFoundError:
+        print("리소스 파일이 누락되었습니다. 주사위와 배경 이미지를 확인하세요.")
+        pygame.quit()
+        exit()
+    return dice_images, bg, roll_sound
+
+class Button:
+    """버튼 클래스"""
+    def __init__(self, x, y, width, height, text):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.color = GRAY
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.color, self.rect, border_radius=10)
+        font = pygame.font.SysFont("arial", 24)
+        text_surface = font.render(self.text, True, BLACK)
+        text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
+
+    def is_clicked(self, event):
+        if event.type == MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                return True
+        return False
+
+def set_text(screen, text, y_offset, color=WHITE, font_size=30):
+    """텍스트 출력 함수"""
+    font_path = 'NEODGM_CODE.TTF'
+    font = pygame.font.Font(font_path, 28)
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
+    screen.blit(text_surface, text_rect)
+
 def main():
-    statue, player, clock = init_game()
-    running = True
-    success = False
-    
-    while running:
-        screen.blit(background_image, (0, 0))
+    """메인 함수"""
+    screen = init_game()
+    pygame.mixer.init()
+    dice_images, bg, roll_sound = load_resources()
 
-        # 이벤트 처리
-        keys = pygame.key.get_pressed()
+    roll_button = Button(SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT - 100, 150, 50, "Roll Dice")
+
+    success_count = 0
+    dice_rolls = []
+    clock = pygame.time.Clock()
+    is_active = True
+
+    while is_active:
+        screen.fill(BLACK)
+        screen.blit(bg, (0, 0))
+        set_text(screen, "두 개의 주사위를 굴려 합이 10이 되도록 하세요!", 50, WHITE, 24)
+        set_text(screen, "3번 성공하면 비밀번호의 한 자리를 얻을 수 있습니다.", 80, WHITE, 20)
+
         for event in pygame.event.get():
             if event.type == QUIT:
-                running = False
+                is_active = False
 
-        # 동상 상태 업데이트
-        statue.update()
+            if roll_button.is_clicked(event):
 
-        # 플레이어 업데이트
-        player.update(keys)
+                roll_sound.play()
 
-        # 충돌 감지
-        if statue.state == "open" and player.is_moving:
-            player.lose_life()  # 라이프 감소
-            if player.lives <= 0:
-                running = False
+                dice_rolls = [random.randint(0, 5), random.randint(0, 5)]
+                dice_sum = (dice_rolls[0] + 1) + (dice_rolls[1] + 1)
+                if dice_sum == 10:
+                    success_count += 1
 
-        if player.rect.colliderect(statue.rect):
-            success = True
-            running = False
+        if dice_rolls:
+            screen.blit(dice_images[dice_rolls[0]], (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 150))
+            screen.blit(dice_images[dice_rolls[1]], (SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 - 150))
 
-        # 그리기
-        statue.draw(screen)
-        player.draw(screen)
-        draw_lives(screen, player.lives)  # 라이프 그리기
+        set_text(screen, f"성공 횟수: {success_count}", SCREEN_HEIGHT - 200, WHITE)
 
-        pygame.display.flip()
-        clock.tick(30)
+        if success_count == 3:
+            set_text(screen, "비밀번호 한 자리를 얻었습니다.", SCREEN_HEIGHT -150, WHITE, 24)
+            pygame.display.update()
+            pygame.time.delay(3000)
+            is_active=False
 
-    # 결과 화면
-    show_result(player.lives, success)
+        roll_button.draw(screen)
+        pygame.display.update()
+        clock.tick(60)
 
-def show_result(lives, success):
-    screen.fill(WHITE)
-    FONT = pygame.font.Font("NEODGM_CODE.TTF", 50)  # 폰트 변경
-    if lives <= 0:
-        result_text = FONT.render("GAME OVER!", True, (255, 0, 0))
-    elif success:
-        result_text = FONT.render("SUCCESS!", True, (0, 255, 0))
-    screen.blit(result_text, (WIDTH // 2 - 100, HEIGHT // 2 - 25))
-    pygame.display.flip()
-    pygame.time.delay(3000)
     pygame.quit()
 
 if __name__ == "__main__":
