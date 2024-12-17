@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 700
-DICE_SIZE = (100, 100)
+DICE_SIZE = (150, 150)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
@@ -63,7 +63,7 @@ class Button:
 def set_text(screen, text, y_offset, color=WHITE, font_size=30):
     """텍스트 출력 함수"""
     font_path = 'NEODGM_CODE.TTF'
-    font = pygame.font.Font(font_path, 21)
+    font = pygame.font.Font(font_path, 28)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
     screen.blit(text_surface, text_rect)
@@ -101,8 +101,8 @@ def main():
                     success_count += 1
 
         if dice_rolls:
-            screen.blit(dice_images[dice_rolls[0]], (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 50))
-            screen.blit(dice_images[dice_rolls[1]], (SCREEN_WIDTH // 2 + 50, SCREEN_HEIGHT // 2 - 50))
+            screen.blit(dice_images[dice_rolls[0]], (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 150))
+            screen.blit(dice_images[dice_rolls[1]], (SCREEN_WIDTH // 2 + 100, SCREEN_HEIGHT // 2 - 150))
 
         set_text(screen, f"성공 횟수: {success_count}", SCREEN_HEIGHT - 200, WHITE)
 
