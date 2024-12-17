@@ -7,6 +7,25 @@ def elv_game():
     # 초기화
     pygame.init()
     
+    # 배경 이미지 불러오기
+    def load_background_image():
+        try:
+            background = pygame.image.load("elev.png")  # 배경 이미지 파일 경로 설정
+            background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # 화면 크기에 맞게 조정
+            return background
+        except pygame.error as e:
+            print(f"Error loading background image: {e}")
+            sys.exit()
+
+    # 배경 이미지 로드
+    background = load_background_image()
+
+    # 화면 렌더링
+    screen.fill(WHITE)
+
+    # 배경 그리기
+    screen.blit(background, (0, 0))  # 배경 이미지 그리기
+
     # 화면 설정
     WIDTH, HEIGHT = 1200, 700
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
