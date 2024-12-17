@@ -146,9 +146,13 @@ def run_game():
             mob = Mob()
             all_sprites.add(mob)
             mobs.add(mob)
+            
+        if score >= 300:
+            print("실패!")
+            return 1
 
         if pygame.sprite.spritecollide(player, enemy_bullets, False) or pygame.sprite.spritecollide(player, mobs, False):
-            running = False
+            return -1
 
         # 랜덤으로 3개의 적만 총알 발사
         current_time = pygame.time.get_ticks()

@@ -77,9 +77,20 @@ def F4_test():
         clock.tick(60)
         
     # 텍스트 완료 후 다른 모듈 실행
-    run_game()
+    result = run_game()
     pygame.time.delay(100)
-    F4_story()
+    
+    if result == 1:
+        print("게임에서 승리했습니다!")
+        # 승리 이벤트 실행
+        F4_story()
+    elif result == -1:
+        print("게임에서 패배했습니다.")
+        # 패배 이벤트 실행
+        F4_story()
+    else:
+        print("알 수 없는 결과입니다.")
+        # 기본 이벤트 실행
 
     pygame.quit()
     sys.exit()
