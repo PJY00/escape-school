@@ -23,6 +23,10 @@ def F4_test():
     font_path = 'NEODGM_CODE.TTF'
     font = pygame.font.Font(font_path, 20)
 
+    # 버튼 이미지 불러오기
+    button_image = pygame.image.load('NPCpixel.png')  # 이미지 파일 경로 설정
+    button_image = pygame.transform.scale(button_image, (200, 100))  # 버튼 크기에 맞게 이미지 조정
+
     # 사각형 버튼 정의
     button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 200, 100)
 
@@ -60,8 +64,8 @@ def F4_test():
         # 화면 렌더링
         screen.fill(WHITE)
 
-        # 버튼 렌더링
-        pygame.draw.rect(screen, BLUE, button_rect)
+        # 버튼 렌더링 (이미지 사용)
+        screen.blit(button_image, button_rect.topleft)
 
         # 텍스트 렌더링
         if text_visible:
@@ -92,4 +96,3 @@ def F4_test():
 
     pygame.quit()
     sys.exit()
-    
