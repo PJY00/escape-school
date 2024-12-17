@@ -23,6 +23,9 @@ def F3_test():
     # 버튼 이미지 불러오기
     button_image = pygame.image.load('NPCpixel.png')  # 이미지 파일 경로 설정
     button_image = pygame.transform.scale(button_image, (400, 400))  # 버튼 크기에 맞게 이미지 조정
+    
+        # 사각형 버튼 정의
+    button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 400, 400)
 
     # 배경 이미지 불러오기
     def load_background_image():
@@ -56,8 +59,6 @@ def F3_test():
         run_scram()
         F3_1_story()
         pygame.time.delay(100)
-
-    if handle_event(screen, clock, font, button_rect, ["두 번째 이벤트를 시작합니다.", "도전하세요!"]):
         run_dice()
         F3_2_story()
         pygame.time.delay(100)
