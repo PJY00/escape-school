@@ -2,6 +2,7 @@ import pygame
 import sys
 from BG_tutorial import run_text
 from F4_main import F4_main
+from BG_saveload import run_load
 
 pygame.init()
 
@@ -49,7 +50,7 @@ def handle_click(pos):
         run_text()
         F4_main()
     elif load_text_rect.collidepoint(pos):
-        print("Load button clicked!")  
+        run_load()
     elif quit_text_rect.collidepoint(pos):
         print("Quit button clicked!")  
         pygame.quit()
