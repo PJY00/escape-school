@@ -95,5 +95,3 @@ def F2_story():
                         displayed_text = ""  # 출력된 텍스트 초기화
 
         clock.tick(60)  # 60 FPS
-
-    pygame.quit()
