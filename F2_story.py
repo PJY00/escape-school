@@ -7,7 +7,6 @@ WIDTH, HEIGHT = 1200, 700
 # 색상 정의
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE=(100,149,237)
 
 def F4_story():
     # Pygame 초기화
