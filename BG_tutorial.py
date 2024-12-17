@@ -45,7 +45,7 @@ def run_text():
     left_margin = 50  # 좌측 여백
     right_margin = WIDTH - 50  # 우측 여백
     line_height = 20  # 줄 간격
-    text_y = HEIGHT - (len(texts) * 25) - 30  # 텍스트 시작 y 좌표
+    text_y = HEIGHT - 200  # 텍스트 시작 y 좌표
 
     # 메인 루프
     running = True

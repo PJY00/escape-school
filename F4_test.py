@@ -84,10 +84,8 @@ def F4_test():
         # 승리 이벤트 실행
         F4_story()
     elif result == -1:
+        # 배드엔딩
         bad_end()
-        print("게임에서 패배했습니다.")
-        # 패배 이벤트 실행
-        F4_story()
     else:
         print("알 수 없는 결과입니다.")
         # 기본 이벤트 실행
