@@ -2,7 +2,6 @@ import pygame
 import sys
 import random
 import math
-import time
 
 def run_game():
     # Constants
@@ -35,7 +34,7 @@ def run_game():
                 valid_distance = all(
                     math.hypot(self.position[0] - pos[0], self.position[1] - pos[1]) >= 80 for pos in existing_positions
                 )
-                if distance_to_star >= 120 and valid_distance:
+                if distance_to_star >= 200 and valid_distance:  # 별과의 거리 기준을 200으로 조정
                     return
                 self.angle = random.uniform(0, 360)
                 self.position = self.calculate_position()
@@ -88,22 +87,22 @@ def run_game():
         pygame.quit()
         sys.exit()
 
-    def game_over(screen, score):
+    def game_over(screen, score, lives):
         try:
             font = pygame.font.Font("NEODGM_CODE.TTF", 72)
         except FileNotFoundError:
             font = pygame.font.SysFont("arial", 72)
         text = font.render("Game Over", True, WHITE)
         score_text = pygame.font.Font("NEODGM_CODE.TTF", 48).render(f"Score: {score}", True, WHITE)
+        lives_text = pygame.font.Font("NEODGM_CODE.TTF", 48).render(f"Lives: {lives}", True, WHITE)
 
         screen.fill(BLACK)
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT // 2 - 50))
         screen.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
+        screen.blit(lives_text, (SCREEN_WIDTH // 2 - lives_text.get_width() // 2, SCREEN_HEIGHT // 2 + 80))
 
         pygame.display.flip()
         pygame.time.delay(2000)
-        pygame.quit()
-        sys.exit()
 
     def show_instructions(screen):
         try:
@@ -115,16 +114,12 @@ def run_game():
 
         title_text = font_title.render("Orbit Game Instructions", True, WHITE)
         instructions = [
-            "1. Use SPACE_BAR to change the star's",
-            "    color.",
-            "2. Match the star's color to the orb's",
-            "    color to score points.",
-            "3. Avoid orbs with mismatched colors",
-            "    - it's Game Over!",
-            "4. At 10 and 20 points, the star's",
-            "    rotation direction changes.",
+            "1. 스페이스 바를 눌러 별의 색상을 변경하세요.",
+            "2. 별의 색상을 오브의 색상과 맞추면 점수를 얻습니다.",
+            "3. 색상이 맞지 않는 오브는 피하세요 - 충돌하면 게임 오버입니다!",
+            "4. 10점과 20점에 도달하면 별의 회전 방향이 바뀝니다.",
             "",
-            "Press SPACE_BAR to start the game!",
+            "스페이스 바를 눌러 게임을 시작하세요!",
         ]
 
         screen.fill(BLACK)
@@ -167,66 +162,4 @@ def run_game():
 
     star = Star()
     orbs = create_orbs(2, star.position)
-    clock = pygame.time.Clock()
-    score = 0
-    star_speed = 2
-
-    while True:
-        screen.fill(BLACK) 
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    star.change_color()
-
-        # Update star position
-        star.angle = (star.angle + star_speed) % 360
-        star.update_position()
-
-        # Change direction based on score
-        if score == 10:
-            star_speed = -star_speed
-        if score == 20:
-            star_speed = -star_speed
-
-        # Draw planet and orbit
-        pygame.draw.circle(screen, PLANET_COLOR, PLANET_CENTER, 140)
-        pygame.draw.circle(screen, WHITE, PLANET_CENTER, ORBIT_RADIUS, 1)
-
-        # Draw and process orbs
-        for orb in orbs[:]:
-            orb.draw(screen)
-            distance = math.hypot(orb.position[0] - star.position[0], orb.position[1] - star.position[1])
-            if distance < orb.radius + star.radius:
-                if orb.color == star.color:
-                    score += 1
-                    orbs.remove(orb)
-                else:
-                    game_over(screen, score)
-
-        # Check for success
-        if score >= 25:
-            success(screen)
-
-        # Generate new orbs if needed
-        if len(orbs) == 0:
-            orbs = create_orbs(random.randint(2, 3), star.position)
-
-        # Draw star
-        star.draw(screen)
-
-        # Display score
-        try:
-            font = pygame.font.Font("NEODGM_CODE.TTF", 36)
-        except FileNotFoundError:
-            font = pygame.font.SysFont("arial", 36)
-        score_text = font.render(f"Score: {score}", True, WHITE)
-        screen.blit(score_text, (10, 10))
-
-        pygame.display.flip()
-        clock.tick(30)
-
-run_game()
+    clock = pygame.time.C

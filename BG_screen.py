@@ -2,7 +2,6 @@ import pygame
 import sys
 from BG_tutorial import run_text
 from F4_main import F4_main
-from BG_saveload import run_load
 
 pygame.init()
 
@@ -13,6 +12,7 @@ pygame.display.set_caption("Escape School")
 
 # 색상 정의
 WHITE = (255, 255, 255)
+BOX_COLOR = (0, 0, 0)  # 네모 상자의 색상 (검정색)
 
 # 폰트 설정
 font_path = 'neodgm_code.ttf'  # 폰트 파일 경로
@@ -20,10 +20,10 @@ font_middle = pygame.font.Font(font_path, 48)  # 폰트 크기 48
 font_small = pygame.font.Font(font_path, 30)   # 폰트 크기 30
 
 # 텍스트 렌더링
-game_name = font_middle.render("학교탈출", True, (WHITE))  # 빨간색
-start_text = font_small.render("새게임", True, (WHITE))   # 초록색
-load_text = font_small.render("불러오기", True, (WHITE))  # 파란색
-quit_text = font_small.render("종료하기", True, (WHITE))  # 노란색
+game_name = font_middle.render("학교탈출", True, WHITE) 
+start_text = font_small.render("새게임", True, WHITE)   
+load_text = font_small.render("불러오기", True, WHITE)  
+quit_text = font_small.render("종료하기", True, WHITE)  
 
 # 텍스트 위치 설정
 game_name_rect = game_name.get_rect(center=(WIDTH // 2, HEIGHT // 5))
@@ -50,7 +50,7 @@ def handle_click(pos):
         run_text()
         F4_main()
     elif load_text_rect.collidepoint(pos):
-        run_load()
+        print("Load button clicked!")  
     elif quit_text_rect.collidepoint(pos):
         print("Quit button clicked!")  
         pygame.quit()
@@ -68,6 +68,12 @@ while running:
 
     # 배경 그리기
     screen.blit(background, (0, 0))
+
+    # 텍스트 주변에 검은색 상자 그리기 (채우기)
+    pygame.draw.rect(screen, BOX_COLOR, game_name_rect.inflate(20, 10))
+    pygame.draw.rect(screen, BOX_COLOR, start_text_rect.inflate(20, 10))  # '새게임' 텍스트 주변에 검은 상자 채우기
+    pygame.draw.rect(screen, BOX_COLOR, load_text_rect.inflate(20, 10))   # '불러오기' 텍스트 주변에 검은 상자 채우기
+    pygame.draw.rect(screen, BOX_COLOR, quit_text_rect.inflate(20, 10))   # '종료하기' 텍스트 주변에 검은 상자 채우기
 
     # 텍스트 화면에 그리기
     screen.blit(game_name, game_name_rect)
