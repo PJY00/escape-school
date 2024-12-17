@@ -21,12 +21,10 @@ def bad_end():
 
     # 텍스트 리스트
     texts = [
-        "배드엔딩 출력 테스트",
-        "출력 테스트 두번째 줄",
-        "출력 테스트 세번째 줄",
-        "마지막 줄임. 출력 확인 바람.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec erat sit amet odio feugiat scelerisque.",
-        "안녕, 여기는 더미 텍스트야. 출력 테스트를 위해 준비된 문장이지."
+        "당신은 실패로 인해 절망에 빠졌다.",
+        "밝아오는 아침 해를 보며 당신은 아직 끝내지 못한 과제를 떠올렸다.",
+        "오늘 9시 수업인데... 당신은 그렇게 생각하며 주저앉았다.",
+        "탈출 실패",
     ]
 
     # 텍스트 출력 상태 변수
@@ -39,7 +37,7 @@ def bad_end():
     left_margin = 50  # 좌측 여백
     right_margin = WIDTH - 50  # 우측 여백
     line_height = 20  # 줄 간격
-    text_y = HEIGHT - (len(texts) * 25) - 30  # 텍스트 시작 y 좌표
+    text_y = HEIGHT - 200 # 텍스트 시작 y 좌표
 
     # 메인 루프
     running = True
