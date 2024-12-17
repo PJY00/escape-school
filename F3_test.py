@@ -2,7 +2,7 @@ import pygame
 import sys
 from F3_1_story import F3_1_story 
 from F3_2_story import F3_2_story
-from scramble_english import run_game
+from scramble_english import run_scram
 from Rolling_Dice_Mini_Game import run_dice
 
 def F3_test():
@@ -29,17 +29,13 @@ def F3_test():
 
     # 텍스트 상태 변수
     if handle_event(screen, clock, font, button_rect, ["첫 번째 게임을 시작합니다.", "게임을 준비하세요."]):
-        result = run_game()
+        run_scram()
+        F3_1_story()
         pygame.time.delay(100)
-        
-        if result == 1:
-            print("게임에서 승리했습니다!")
-            F3_1_story()
-        else:
-            print("알 수 없는 결과입니다.")
 
     if handle_event(screen, clock, font, button_rect, ["두 번째 이벤트를 시작합니다.", "도전하세요!"]):
         run_dice()
+        F3_2_story()
         pygame.time.delay(100)
     
     pygame.quit()

@@ -80,7 +80,7 @@ def show_end_screen(screen, font):
     pygame.display.flip()
 
 # 메인 함수
-def main():
+def run_scram():
     screen = init_game()
     bg = load_resources()
 
@@ -142,6 +142,3 @@ def main():
         pygame.display.flip()
 
     pygame.quit()
-
-if __name__ == "__main__":
-    main()
