@@ -24,7 +24,7 @@ GRAY = (200, 200, 200)
 # 비밀번호 입력 초기화
 password = ""
 max_length = 5  # 비밀번호 최대 길이
-correct_password="13245"
+correct_password="12345"
 input_box = pygame.Rect(WIDTH // 2 - 250, HEIGHT // 2 - 30, 500, 120)
 
 
