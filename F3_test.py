@@ -95,26 +95,7 @@ def F3_test():
         pygame.display.flip()
         clock.tick(60)
         
-    # 텍스트 완료 후 다른 모듈 실행
-    result = run_scram()
-    pygame.time.delay(100)
-    
-    if result == 1:
-        print("게임에서 승리했습니다!")
-        # 승리 이벤트 실행
+        run_scram()
+        run_dice()
         F3_story()
-    else:
-        print("알 수 없는 결과입니다.")
-        # 기본 이벤트 실행
-
-    print("두 번째 게임을 시작합니다!")
-    result_2 = run_dice()
-    pygame.time.delay(100)
-
-    if result_2 == 1:
-        print("두 번째 게임에서 승리했습니다!")
-        F3_story()
-    else:
-        print("두 번째 게임 결과: 알 수 없는 상태")
-
-    print("모든 게임이 끝났습니다. 프로그램을 종료합니다.")
+        running = False
