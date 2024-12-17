@@ -1,7 +1,7 @@
 import pygame
 import sys
-from F4_story import F4_story 
-from shooter import run_game
+from F1_story import F1_story 
+from Color_Orbit_Game import run_game
 from bad_end import bad_end
 
 def F4_test():
@@ -82,7 +82,7 @@ def F4_test():
     if result == 1:
         print("게임에서 승리했습니다!")
         # 승리 이벤트 실행
-        F4_story()
+        F1_story()
     elif result == -1:
         # 배드엔딩
         bad_end()
