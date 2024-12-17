@@ -115,7 +115,3 @@ def run_game():
 
 def F3_1_story():
     print("F3_1_story() 실행됨")
-
-    pygame.quit()
-    sys.exit()
-    
