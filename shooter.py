@@ -158,7 +158,7 @@ def run_shooter():
             all_sprites.add(mob)
             mobs.add(mob)
             
-        if score >= 300:
+        if score >= 30:
             print("실패!")
             return 1
 

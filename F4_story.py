@@ -58,7 +58,6 @@ def F4_story():
                     last_char_time = current_time  # 마지막 글자 출력 시간 갱신
         else:
             # 모든 텍스트가 출력된 후의 처리
-            displayed_text = "모든 텍스트가 출력 끝!"
             pygame.time.delay(300)
             running = False
         
@@ -98,5 +97,3 @@ def F4_story():
                         displayed_text = ""  # 출력된 텍스트 초기화
 
         clock.tick(60)  # 60 FPS
-
-    pygame.quit()

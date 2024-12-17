@@ -10,6 +10,7 @@ from BG_saveload import run_load
 
 pygame.init()
 
+
 # 화면 크기 설정
 WIDTH, HEIGHT = 1200, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
