@@ -27,6 +27,9 @@ def F2_test():
     button_image = pygame.image.load('NPCpixel.png')  # 이미지 파일 경로 설정
     button_image = pygame.transform.scale(button_image, (400, 400))  # 버튼 크기에 맞게 이미지 조정
 
+     # 사각형 버튼 정의
+    button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 400, 400)
+
     # 배경 이미지 불러오기
     def load_background_image():
         try:
