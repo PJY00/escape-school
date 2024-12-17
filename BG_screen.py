@@ -20,10 +20,10 @@ font_middle = pygame.font.Font(font_path, 48)  # 폰트 크기 48
 font_small = pygame.font.Font(font_path, 30)   # 폰트 크기 30
 
 # 텍스트 렌더링
-game_name = font_middle.render("학교탈출", True, (255, 0, 0))  # 빨간색
-start_text = font_small.render("새게임", True, (0, 255, 0))   # 초록색
-load_text = font_small.render("불러오기", True, (0, 0, 255))  # 파란색
-quit_text = font_small.render("종료하기", True, (255, 255, 0))  # 노란색
+game_name = font_middle.render("학교탈출", True, (WHITE))  # 빨간색
+start_text = font_small.render("새게임", True, (WHITE))   # 초록색
+load_text = font_small.render("불러오기", True, (WHITE))  # 파란색
+quit_text = font_small.render("종료하기", True, (WHITE))  # 노란색
 
 # 텍스트 위치 설정
 game_name_rect = game_name.get_rect(center=(WIDTH // 2, HEIGHT // 5))
