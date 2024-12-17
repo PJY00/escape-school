@@ -79,9 +79,11 @@ def run_orbit():
             font = pygame.font.Font("NEODGM_CODE.TTF", 72)
         except FileNotFoundError:
             font = pygame.font.SysFont("arial", 72)
-        text = font.render("Success!", True, WHITE)
+        success_text = font.render("Success!", True, WHITE)
+        keynumber_text = font.render("key number = 5", True, WHITE)
         screen.fill(BLACK)
-        screen.blit(text, (SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT // 2 - 50))
+        screen.blit(success_text, (SCREEN_WIDTH // 2 - success_text.get_width()//2, SCREEN_HEIGHT // 2 - 100))
+        screen.blit(keynumber_text, (SCREEN_WIDTH // 2 -  keynumber_text.get_width() // 2, SCREEN_HEIGHT // 2))
         pygame.display.flip()
         pygame.time.delay(2000)
         pygame.quit()
@@ -218,7 +220,7 @@ def run_orbit():
                         return game_over(screen, score, lives)  # Game over if no lives are left
 
         # Check for success
-        if score >= 25:
+        if score >= 3:
             return success(screen)  # Success return
 
         # Generate new orbs if needed
@@ -237,3 +239,7 @@ def run_orbit():
 
         pygame.display.flip()
         clock.tick(30)
+
+# Run the game
+if __name__ == "__main__":
+    run_orbit()
