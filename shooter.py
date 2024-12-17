@@ -19,7 +19,8 @@ def run_game():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Shooter!")
     clock = pygame.time.Clock()
-    font = pygame.font.Font(None, 36)
+    font_path = 'NEODGM_CODE.TTF'  # 폰트 파일 경로
+    font = pygame.font.Font(font_path, 20)  # 폰트 크기 36으로 설정
 
     # 점수 변수
     score = 0
@@ -56,13 +57,16 @@ def run_game():
     class Mob(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__()
-            self.image = pygame.Surface((30, 40))
-            self.image.fill(RED)
+            # 알파 채널이 있는 Surface 생성
+            self.image = pygame.Surface((30, 40), pygame.SRCALPHA)
+            self.image.fill((255, 0, 0, 0))  # 빨간색, 투명도 100 (0~255)
             self.rect = self.image.get_rect()
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 4)
             self.speedx = random.randrange(-3, 3)
+            self.font = pygame.font.Font(font_path, 24)  # 텍스트 폰트 설정
+
 
         def update(self):
             self.rect.x += self.speedx
@@ -76,6 +80,13 @@ def run_game():
             bullet = EnemyBullet(self.rect.centerx, self.rect.bottom)
             all_sprites.add(bullet)
             enemy_bullets.add(bullet)
+
+        def draw_text(self, screen):
+            # 텍스트 렌더링 (사각형 안에 출력)
+            text_surface = self.font.render("과제", True, WHITE)
+            text_rect = text_surface.get_rect(center=self.rect.center)  # 텍스트를 Mob의 중심에 맞춤
+            screen.blit(text_surface, text_rect)
+            screen.blit(text_surface, text_rect)
 
     class Bullet(pygame.sprite.Sprite):
         def __init__(self, x, y):
@@ -165,6 +176,10 @@ def run_game():
         # 화면 렌더링
         screen.fill(BLACK)
         all_sprites.draw(screen)
+        
+        # 각 Mob에 텍스트 출력
+        for mob in mobs:
+            mob.draw_text(screen)
 
         # 점수 표시
         score_text = font.render(f"Score: {score}", True, WHITE)
