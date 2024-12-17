@@ -23,8 +23,22 @@ def F2_test():
     font_path = 'NEODGM_CODE.TTF'
     font = pygame.font.Font(font_path, 20)
 
+    # 버튼 이미지 불러오기
+    button_image = pygame.image.load('NPCpixel.png')  # 이미지 파일 경로 설정
+    button_image = pygame.transform.scale(button_image, (400, 400))  # 버튼 크기에 맞게 이미지 조정
+
+    # 배경 이미지 불러오기
+    def load_background_image():
+        try:
+            background = pygame.image.load("class3.png")  # 배경 이미지 파일 경로 설정
+            background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # 화면 크기에 맞게 조정
+            return background
+        except pygame.error as e:
+            print(f"Error loading background image: {e}")
+            sys.exit()
+
     # 사각형 버튼 정의
-    button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 200, 100)
+    button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 400, 400)
 
     # 텍스트 상태 변수
     texts = [
