@@ -113,5 +113,3 @@ def run_dice():
         roll_button.draw(screen)
         pygame.display.update()
         clock.tick(60)
-
-    pygame.quit()
