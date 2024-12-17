@@ -237,7 +237,3 @@ def run_orbit():
 
         pygame.display.flip()
         clock.tick(30)
-
-# Run the game and return result
-result = run_orbit()
-print(result)
