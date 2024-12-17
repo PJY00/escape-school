@@ -21,12 +21,9 @@ def bad_end():
 
     # 텍스트 리스트
     texts = [
-        "배드엔딩 출력 테스트",
-        "출력 테스트 두번째 줄",
-        "출력 테스트 세번째 줄",
-        "마지막 줄임. 출력 확인 바람.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec erat sit amet odio feugiat scelerisque.",
-        "안녕, 여기는 더미 텍스트야. 출력 테스트를 위해 준비된 문장이지."
+       "당신은 게임을 실패하였습니다.",
+       "당신은 학교를 탈출할 수 없습니다.",
+       "내일 아침에 문이 열릴 때까지 기다리세요",
     ]
 
     # 텍스트 출력 상태 변수
