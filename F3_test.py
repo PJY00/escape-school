@@ -34,6 +34,8 @@ def F3_test():
             print(f"Error loading background image: {e}")
             sys.exit()
 
+    # 배경 이미지 로드
+    background = load_background_image()
     # 폰트 설정
     font_path = 'NEODGM_CODE.TTF'
     font = pygame.font.Font(font_path, 20)

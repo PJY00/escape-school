@@ -37,6 +37,8 @@ def F2_test():
             print(f"Error loading background image: {e}")
             sys.exit()
 
+    # 배경 이미지 로드
+    background = load_background_image()
     # 사각형 버튼 정의
     button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 400, 400)
 
