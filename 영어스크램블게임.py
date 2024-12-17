@@ -130,7 +130,8 @@ def main():
         hint_font = pygame.font.Font(font_path, 10)  # 기존 폰트 크기보다 작게 설정
 
         # "올바르게 배열하세요 힌트: 과일" 텍스트 표시
-        hint_text = font.render("올바르게 배열하세요 힌트: 과일", True, black)
+        hint_font = pygame.font.Font(font_path, 30)  # 폰트 크기 30으로 설정 (원하는 숫자로 변경 가능)
+        hint_text = hint_font.render("올바르게 배열하세요 힌트: 과일", True, black)
         screen.blit(hint_text, (SCREEN_WIDTH // 2 - hint_text.get_width() // 2, 100))
 
         #섞인 단어 표시
