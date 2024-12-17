@@ -83,7 +83,7 @@ def run_dice():
         screen.fill(BLACK)
         screen.blit(bg, (0, 0))
         set_text(screen, "두 개의 주사위를 굴려 합이 10이 되도록 하세요!", 50, WHITE, 24)
-        set_text(screen, "3번 성공하면 비밀번호의 한 자리를 얻을 수 있습니다.", 80, WHITE, 20)
+        set_text(screen, "3번 성공하면 비밀번호의 한 자리를 얻을 수 있습니다. Hint: 3", 80, WHITE, 20)
 
         for event in pygame.event.get():
             if event.type == QUIT:
