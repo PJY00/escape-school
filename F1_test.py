@@ -42,14 +42,6 @@ def F1_test():
 
     # 배경 이미지 로드
     background = load_background_image()
-    # 화면 렌더링
-    screen.fill(WHITE)
-
-    # 배경 그리기
-    screen.blit(background, (0, 0))  # 배경 이미지 그리기
-
-    # 버튼 렌더링 (이미지 사용)
-    screen.blit(button_image, button_rect.topleft)
 
     # 텍스트 상태 변수
     texts = [
@@ -82,11 +74,14 @@ def F1_test():
                         text_visible = False  # 모든 텍스트가 끝나면 출력 비활성화
                         running = False  # 루프 종료
 
-        # 화면 렌더링
+            # 화면 렌더링
         screen.fill(WHITE)
 
-        # 버튼 렌더링
-        pygame.draw.rect(screen, BLUE, button_rect)
+        # 배경 그리기
+        screen.blit(background, (0, 0))  # 배경 이미지 그리기
+
+        # 버튼 렌더링 (이미지 사용)
+        screen.blit(button_image, button_rect.topleft)
 
         # 텍스트 렌더링
         if text_visible:
