@@ -140,5 +140,3 @@ def run_scram():
         score_text = font.render(f" {score}/{total_questions}", True, black)
         screen.blit(score_text, (10, 10))
         pygame.display.flip()
-
-    pygame.quit()
